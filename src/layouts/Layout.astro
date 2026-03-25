@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ThreeCanvas from '../components/ThreeCanvas';
 
 interface Props {
   title: string;
@@ -22,6 +23,7 @@ const { title } = Astro.props;
     <meta name="og:type" content="website" />
   </head>
   <body class="bg-black text-white">
+    <ThreeCanvas client:only="solid-js" />
     <slot />
   </body>
 </html>
