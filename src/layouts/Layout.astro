@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import ThreeCanvas from '../components/ThreeCanvas';
+import FullThreeScene from '../components/FullThreeScene';
 
 interface Props {
   title: string;
@@ -22,9 +22,8 @@ const { title } = Astro.props;
     <meta name="og:description" content="Systems engineer. 4+ years shipping products that scale." />
     <meta name="og:type" content="website" />
   </head>
-  <body class="bg-black text-white">
-    <ThreeCanvas client:only="solid-js" />
-    <slot />
+  <body class="bg-black text-white" style="overflow: hidden;">
+    <FullThreeScene client:only="solid-js" />
   </body>
 </html>
 
