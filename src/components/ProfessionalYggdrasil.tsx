@@ -2,13 +2,16 @@ import * as THREE from 'three';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { createEffect, onCleanup } from 'solid-js';
 
 export default function ProfessionalYggdrasil() {
-  let canvasRef: HTMLCanvasElement | undefined;
+  let canvas: HTMLCanvasElement;
+  let initialized = false;
 
-  createEffect(() => {
-    if (!canvasRef) return;
+  const init = () => {
+    if (initialized || !canvas) return;
+    initialized = true;
+
+    console.log('Initializing ProfessionalYggdrasil...');
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a1628);
@@ -18,7 +21,7 @@ export default function ProfessionalYggdrasil() {
     const isMobile = window.innerWidth < 768;
     camera.position.set(0, 0, isMobile ? 250 : 150);
 
-    const renderer = new THREE.WebGLRenderer({ canvas: canvasRef!, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = true;
@@ -187,28 +190,10 @@ export default function ProfessionalYggdrasil() {
     eyeR.position.set(serpentPositions[0] + 6, serpentPositions[1] + 4, serpentPositions[2] + 10);
     serpentGroup.add(eyeR);
 
-    // === CONTENT SECTIONS ===
-    const createTextTexture = (text: string, size: number = 256) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = size;
-      canvas.height = size;
-      const ctx = canvas.getContext('2d')!;
-      ctx.fillStyle = '#d4af37';
-      ctx.font = `bold ${size * 0.3}px Arial`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(text, size / 2, size / 2);
-      return new THREE.CanvasTexture(canvas);
-    };
-
-    // Content cards for each realm
-    const contentGroups = realms.map((realm, idx) => {
-      const group = new THREE.Group();
-      group.position.y = realm.y;
-      group.position.z = -200;
-      scene.add(group);
-
-      // Main content card
+    // === CONTENT CARDS ===
+    const realmsData = ['Ship Products', 'About', 'Skills', 'Projects', "Let's Build"];
+    
+    realmsData.forEach((title, idx) => {
       const cardGeo = new THREE.BoxGeometry(50, 30, 2);
       const cardMat = new THREE.MeshStandardMaterial({
         color: 0x1a2332,
@@ -217,25 +202,17 @@ export default function ProfessionalYggdrasil() {
         metalness: 0.4,
       });
       const card = new THREE.Mesh(cardGeo, cardMat);
+      card.position.y = realms[idx].y;
+      card.position.z = -200;
       card.castShadow = true;
       card.receiveShadow = true;
 
       // Gold edges
       const edges = new THREE.EdgesGeometry(cardGeo);
-      const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xd4af37, linewidth: 2 }));
+      const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xd4af37 }));
       card.add(line);
 
-      group.add(card);
-
-      // Title text
-      const titleGeo = new THREE.PlaneGeometry(45, 8);
-      const titleMat = new THREE.MeshBasicMaterial({ map: createTextTexture(['Ship Products', 'About', 'Skills', 'Projects', 'Let\'s Build'][idx], 512) });
-      const titleMesh = new THREE.Mesh(titleGeo, titleMat);
-      titleMesh.position.y = 10;
-      titleMesh.position.z = 1.5;
-      group.add(titleMesh);
-
-      return group;
+      scene.add(card);
     });
 
     // === ANIMATION ===
@@ -247,15 +224,15 @@ export default function ProfessionalYggdrasil() {
     const handleScroll = (e: WheelEvent) => {
       targetScrollZ += e.deltaY * 0.08;
       targetScrollZ = Math.max(-750, Math.min(0, targetScrollZ));
-
-      // Determine which realm we're approaching
-      const realmIndex = Math.round(Math.abs(targetScrollZ) / 150);
-      currentRealmIndex = Math.min(realmIndex, 4);
+      currentRealmIndex = Math.round(Math.abs(targetScrollZ) / 150);
+      currentRealmIndex = Math.min(currentRealmIndex, 4);
     };
 
     window.addEventListener('wheel', handleScroll, { passive: true });
 
+    let animating = true;
     const animate = () => {
+      if (!animating) return;
       requestAnimationFrame(animate);
       time += 0.01;
 
@@ -264,31 +241,20 @@ export default function ProfessionalYggdrasil() {
       const baseZ = isMobile ? 250 : 150;
       camera.position.z = baseZ + scrollZ;
 
-      // Camera orbits slightly around current realm
+      // Camera orbits
       const realmY = realms[currentRealmIndex].y;
       camera.position.y += (realmY - camera.position.y) * 0.05;
 
       // Yggdrasil pulses
       yggdrasilGroup.children.forEach((child) => {
-        if (child instanceof THREE.Mesh && child.material.emissive) {
-          const mat = child.material as THREE.MeshStandardMaterial;
-          if (mat.emissiveIntensity !== undefined) {
-            mat.emissiveIntensity = 0.5 + Math.sin(time) * 0.35;
-          }
+        if (child instanceof THREE.Mesh && (child.material as any).emissiveIntensity !== undefined) {
+          (child.material as any).emissiveIntensity = 0.5 + Math.sin(time) * 0.35;
         }
       });
 
       // Jörmungandr writhes
       serpentGroup.position.x = Math.sin(time * 0.25) * 25;
       serpentGroup.rotation.z += 0.0015;
-
-      // Content cards bob and rotate
-      contentGroups.forEach((group, idx) => {
-        group.children.forEach((child) => {
-          child.position.y += Math.sin(time + idx) * 0.03;
-          child.rotation.z += 0.0005;
-        });
-      });
 
       // Bloom pulse
       bloomPass.strength = 2 + Math.sin(time * 0.5) * 0.6;
@@ -308,17 +274,19 @@ export default function ProfessionalYggdrasil() {
     };
 
     window.addEventListener('resize', handleResize);
+  };
 
-    onCleanup(() => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('wheel', handleScroll);
-      renderer.dispose();
-    });
-  });
+  // Trigger init when canvas mounts
+  setTimeout(() => {
+    if (canvas) init();
+  }, 100);
 
   return (
     <canvas
-      ref={canvasRef}
+      ref={(el) => {
+        canvas = el as HTMLCanvasElement;
+        init();
+      }}
       style={{
         position: 'fixed',
         top: 0,
