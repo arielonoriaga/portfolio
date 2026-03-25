@@ -15,7 +15,11 @@ export default function YggdrasilScene() {
     scene.fog = new THREE.Fog(0x0a1628, 300, 2000);
 
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-    camera.position.set(0, 0, 100);
+    
+    // Adjust camera distance for mobile
+    const isMobile = window.innerWidth < 768;
+    const initialZ = isMobile ? 200 : 100;
+    camera.position.set(0, 0, initialZ);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -57,8 +61,8 @@ export default function YggdrasilScene() {
     const yggdrasilGroup = new THREE.Group();
     scene.add(yggdrasilGroup);
 
-    // Main trunk
-    const trunkGeo = new THREE.CylinderGeometry(8, 12, 300, 32);
+    // Main trunk (larger for visibility)
+    const trunkGeo = new THREE.CylinderGeometry(12, 16, 300, 32);
     const trunkMat = new THREE.MeshStandardMaterial({
       color: 0x3d2817,
       roughness: 0.8,
@@ -87,8 +91,8 @@ export default function YggdrasilScene() {
     ];
 
     realmPositions.forEach((realm, idx) => {
-      // Branch reaching out
-      const branchGeo = new THREE.CylinderGeometry(3, 6, 60, 16);
+      // Branch reaching out (larger for mobile visibility)
+      const branchGeo = new THREE.CylinderGeometry(5, 8, 80, 16);
       const branch = new THREE.Mesh(branchGeo, branchMat);
       branch.position.y = realm.y;
       branch.position.x = 50;
@@ -97,8 +101,8 @@ export default function YggdrasilScene() {
       branch.receiveShadow = true;
       yggdrasilGroup.add(branch);
 
-      // Realm node (glowing sphere)
-      const nodeGeo = new THREE.SphereGeometry(15, 32, 32);
+      // Realm node (glowing sphere - larger)
+      const nodeGeo = new THREE.SphereGeometry(20, 32, 32);
       const nodeMat = new THREE.MeshStandardMaterial({
         color: 0xd4af37,
         emissive: 0xd4af37,
@@ -304,9 +308,21 @@ export default function YggdrasilScene() {
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
       composer.setSize(w, h);
+      
+      // Adjust camera on mobile resize
+      const mobile = w < 768;
+      const targetZ = mobile ? 200 : 100;
+      if (Math.abs(camera.position.z - targetZ) > 1) {
+        camera.position.z = targetZ;
+      }
     };
 
     window.addEventListener('resize', handleResize);
+    
+    // Force initial render to ensure visibility
+    setTimeout(() => {
+      renderer.render(scene, camera);
+    }, 100);
 
     return () => {
       window.removeEventListener('resize', handleResize);
