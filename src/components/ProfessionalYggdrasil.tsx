@@ -11,17 +11,14 @@ export default function ProfessionalYggdrasil() {
     if (initialized || !canvas) return;
     initialized = true;
 
-    console.log('Initializing ProfessionalYggdrasil...');
-
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a1628);
-    scene.fog = new THREE.Fog(0x0a1628, 400, 2500);
+    scene.fog = new THREE.Fog(0x0a1628, 500, 3000);
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
-    const isMobile = window.innerWidth < 768;
-    camera.position.set(0, 0, isMobile ? 250 : 150);
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 10000);
+    camera.position.set(0, 0, 120);
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = true;
@@ -32,200 +29,156 @@ export default function ProfessionalYggdrasil() {
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      2.5,
-      0.6,
-      0.9
+      2,
+      0.5,
+      0.85
     );
-    bloomPass.threshold = 0.1;
-    bloomPass.strength = 2;
-    bloomPass.radius = 1.2;
+    bloomPass.threshold = 0.2;
+    bloomPass.strength = 1.5;
+    bloomPass.radius = 0.8;
     composer.addPass(bloomPass);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0x6a6a8a, 0.5);
+    // Lighting - dramatic and clean
+    const ambientLight = new THREE.AmbientLight(0x8899bb, 0.4);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
-    directionalLight.position.set(200, 300, 200);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    directionalLight.position.set(150, 200, 150);
     directionalLight.castShadow = true;
     scene.add(directionalLight);
 
-    const goldLight = new THREE.PointLight(0xd4af37, 2.5, 600);
+    const goldLight = new THREE.PointLight(0xd4af37, 2, 400);
     goldLight.position.set(0, 0, 0);
     scene.add(goldLight);
 
-    // === YGGDRASIL BACKBONE ===
-    const yggdrasilGroup = new THREE.Group();
-    scene.add(yggdrasilGroup);
-
-    // Trunk
-    const trunkGeo = new THREE.CylinderGeometry(15, 20, 400, 32);
+    // === SIMPLE YGGDRASIL ===
+    // Main trunk - simple cylinder
+    const trunkGeo = new THREE.CylinderGeometry(8, 12, 350, 16);
     const trunkMat = new THREE.MeshStandardMaterial({
-      color: 0x4d3319,
-      roughness: 0.85,
-      metalness: 0.05,
+      color: 0x5a3a1a,
+      roughness: 0.9,
+      metalness: 0,
     });
     const trunk = new THREE.Mesh(trunkGeo, trunkMat);
     trunk.castShadow = true;
     trunk.receiveShadow = true;
-    yggdrasilGroup.add(trunk);
+    scene.add(trunk);
 
-    // Realm branches and nodes
+    // === JÖRMUNGANDR - PROPER SERPENT ===
+    const serpent = new THREE.Group();
+    scene.add(serpent);
+
+    const segmentCount = 80;
+    const serpentRadius = 70;
+
+    // Create thick serpent body
+    for (let i = 0; i < segmentCount; i++) {
+      const t = i / segmentCount;
+      const angle = t * Math.PI * 6; // 3 full coils
+      const height = 150 - t * 300;
+      const coilRadius = serpentRadius + Math.sin(t * Math.PI) * 30;
+
+      // Segment body
+      const segmentGeo = new THREE.CapsuleGeometry(3, 4, 4, 8);
+      const segmentMat = new THREE.MeshStandardMaterial({
+        color: 0x1a3a1a,
+        emissive: 0x4d8a4d,
+        emissiveIntensity: 0.7,
+        metalness: 0.2,
+        roughness: 0.8,
+      });
+      const segment = new THREE.Mesh(segmentGeo, segmentMat);
+
+      const x = Math.cos(angle) * coilRadius;
+      const z = Math.sin(angle) * coilRadius;
+
+      segment.position.set(x, height, z);
+      segment.rotation.z = angle + Math.PI / 2;
+      segment.castShadow = true;
+      segment.receiveShadow = true;
+      serpent.add(segment);
+    }
+
+    // Serpent head - LARGE and INTIMIDATING
+    const headGeo = new THREE.SphereGeometry(8, 32, 32);
+    const headMat = new THREE.MeshStandardMaterial({
+      color: 0x0a1a0a,
+      emissive: 0x2d5a2d,
+      emissiveIntensity: 0.8,
+      metalness: 0.7,
+      roughness: 0.2,
+    });
+    const head = new THREE.Mesh(headGeo, headMat);
+    head.position.set(serpentRadius, 160, 0);
+    head.castShadow = true;
+    serpent.add(head);
+
+    // Red eyes - MENACING
+    const eyeMat = new THREE.MeshStandardMaterial({
+      color: 0xff3333,
+      emissive: 0xff3333,
+      emissiveIntensity: 1,
+      metalness: 0.9,
+    });
+    const eyeGeo = new THREE.SphereGeometry(2, 16, 16);
+
+    const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeL.position.set(serpentRadius - 4, 163, 3);
+    serpent.add(eyeL);
+
+    const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+    eyeR.position.set(serpentRadius - 4, 163, -3);
+    serpent.add(eyeR);
+
+    // === 5 CLEAR REALM NODES ===
     const realms = [
-      { y: 150, name: 'Asgard', color: 0xffd700 },
-      { y: 75, name: 'Midgard', color: 0xd4af37 },
-      { y: 0, name: 'Vanaheim', color: 0xc9a961 },
-      { y: -75, name: 'Muspelheim', color: 0xff9500 },
-      { y: -150, name: 'Niflheim', color: 0x87ceeb },
+      { y: 130, label: 'Asgard', color: 0xffd700 },
+      { y: 65, label: 'Midgard', color: 0xd4af37 },
+      { y: 0, label: 'Vanaheim', color: 0xc9a961 },
+      { y: -65, label: 'Muspelheim', color: 0xff9500 },
+      { y: -130, label: 'Niflheim', color: 0x87ceeb },
     ];
 
-    const branchMat = new THREE.MeshStandardMaterial({
-      color: 0xd4af37,
-      emissive: 0xd4af37,
-      emissiveIntensity: 0.7,
-      metalness: 0.6,
-      roughness: 0.3,
-    });
-
     realms.forEach((realm) => {
-      // Branch
-      const branchGeo = new THREE.CylinderGeometry(6, 10, 90, 16);
-      const branch = new THREE.Mesh(branchGeo, branchMat);
-      branch.position.y = realm.y;
-      branch.position.x = 60;
-      branch.rotation.z = 0.5;
-      branch.castShadow = true;
-      branch.receiveShadow = true;
-      yggdrasilGroup.add(branch);
+      // Large sphere = clear realm
+      const realmGeo = new THREE.SphereGeometry(18, 32, 32);
+      const realmMat = new THREE.MeshStandardMaterial({
+        color: realm.color,
+        emissive: realm.color,
+        emissiveIntensity: 0.8,
+        metalness: 0.7,
+        roughness: 0.2,
+      });
+      const realmNode = new THREE.Mesh(realmGeo, realmMat);
+      realmNode.position.set(50, realm.y, 0);
+      realmNode.castShadow = true;
+      realmNode.receiveShadow = true;
+      scene.add(realmNode);
 
-      // Realm node
-      const nodeGeo = new THREE.SphereGeometry(22, 32, 32);
-      const nodeMat = new THREE.MeshStandardMaterial({
+      // Glow ring around realm
+      const ringGeo = new THREE.TorusGeometry(22, 1.5, 16, 100);
+      const ringMat = new THREE.MeshStandardMaterial({
         color: realm.color,
         emissive: realm.color,
         emissiveIntensity: 0.9,
-        metalness: 0.8,
-        roughness: 0.15,
       });
-      const node = new THREE.Mesh(nodeGeo, nodeMat);
-      node.position.y = realm.y;
-      node.position.x = 100;
-      node.castShadow = true;
-      node.receiveShadow = true;
-      yggdrasilGroup.add(node);
-
-      // Glow ring
-      const ringGeo = new THREE.TorusGeometry(28, 2.5, 16, 100);
-      const ringMesh = new THREE.Mesh(ringGeo, branchMat);
-      ringMesh.position.copy(node.position);
-      ringMesh.rotation.x = Math.random() * Math.PI;
-      yggdrasilGroup.add(ringMesh);
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(realmNode.position);
+      ring.rotation.x = Math.random() * Math.PI;
+      scene.add(ring);
     });
 
-    // === JÖRMUNGANDR ===
-    const serpentGroup = new THREE.Group();
-    scene.add(serpentGroup);
-
-    const segmentCount = 120;
-    const serpentPositions = new Float32Array(segmentCount * 3);
-
-    for (let i = 0; i < segmentCount; i++) {
-      const t = i / segmentCount;
-      const angle = t * Math.PI * 5;
-      const height = 200 - t * 400;
-      const radius = 80 + Math.sin(t * Math.PI) * 50;
-
-      serpentPositions[i * 3] = Math.cos(angle) * radius;
-      serpentPositions[i * 3 + 1] = height;
-      serpentPositions[i * 3 + 2] = Math.sin(angle) * radius;
-    }
-
-    const serpentMat = new THREE.MeshStandardMaterial({
-      color: 0x1a4d1a,
-      emissive: 0x4d8a4d,
-      emissiveIntensity: 0.6,
-      metalness: 0.3,
-      roughness: 0.7,
-    });
-
-    for (let i = 0; i < segmentCount - 1; i++) {
-      const segGeo = new THREE.CylinderGeometry(7, 7, 3, 16);
-      const seg = new THREE.Mesh(segGeo, serpentMat);
-
-      seg.position.set(
-        serpentPositions[i * 3],
-        serpentPositions[i * 3 + 1],
-        serpentPositions[i * 3 + 2]
-      );
-      seg.castShadow = true;
-      seg.receiveShadow = true;
-      serpentGroup.add(seg);
-    }
-
-    // Serpent head
-    const headGeo = new THREE.SphereGeometry(14, 32, 32);
-    const headMat = new THREE.MeshStandardMaterial({
-      color: 0x0a0a0a,
-      metalness: 0.8,
-      roughness: 0.15,
-    });
-    const head = new THREE.Mesh(headGeo, headMat);
-    head.position.set(serpentPositions[0], serpentPositions[1], serpentPositions[2]);
-    head.castShadow = true;
-    serpentGroup.add(head);
-
-    // Eyes
-    const eyeMat = new THREE.MeshStandardMaterial({
-      color: 0xff5555,
-      emissive: 0xff5555,
-      emissiveIntensity: 1,
-      metalness: 0.95,
-    });
-    const eyeGeo = new THREE.SphereGeometry(3.5, 16, 16);
-    const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeL.position.set(serpentPositions[0] - 6, serpentPositions[1] + 4, serpentPositions[2] + 10);
-    serpentGroup.add(eyeL);
-
-    const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeR.position.set(serpentPositions[0] + 6, serpentPositions[1] + 4, serpentPositions[2] + 10);
-    serpentGroup.add(eyeR);
-
-    // === CONTENT CARDS ===
-    const realmsData = ['Ship Products', 'About', 'Skills', 'Projects', "Let's Build"];
-    
-    realmsData.forEach((title, idx) => {
-      const cardGeo = new THREE.BoxGeometry(50, 30, 2);
-      const cardMat = new THREE.MeshStandardMaterial({
-        color: 0x1a2332,
-        emissive: 0xd4af37,
-        emissiveIntensity: 0.5,
-        metalness: 0.4,
-      });
-      const card = new THREE.Mesh(cardGeo, cardMat);
-      card.position.y = realms[idx].y;
-      card.position.z = -200;
-      card.castShadow = true;
-      card.receiveShadow = true;
-
-      // Gold edges
-      const edges = new THREE.EdgesGeometry(cardGeo);
-      const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xd4af37 }));
-      card.add(line);
-
-      scene.add(card);
-    });
+    // === SIMPLE CONTENT TEXT (overlaid on canvas) ===
+    // We'll keep it minimal - just the 3D scene with clear realms
 
     // === ANIMATION ===
     let time = 0;
     let scrollZ = 0;
     let targetScrollZ = 0;
-    let currentRealmIndex = 0;
 
     const handleScroll = (e: WheelEvent) => {
-      targetScrollZ += e.deltaY * 0.08;
-      targetScrollZ = Math.max(-750, Math.min(0, targetScrollZ));
-      currentRealmIndex = Math.round(Math.abs(targetScrollZ) / 150);
-      currentRealmIndex = Math.min(currentRealmIndex, 4);
+      targetScrollZ += e.deltaY * 0.05;
+      targetScrollZ = Math.max(-600, Math.min(0, targetScrollZ));
     };
 
     window.addEventListener('wheel', handleScroll, { passive: true });
@@ -236,28 +189,25 @@ export default function ProfessionalYggdrasil() {
       requestAnimationFrame(animate);
       time += 0.01;
 
-      // Smooth scroll
-      scrollZ += (targetScrollZ - scrollZ) * 0.08;
-      const baseZ = isMobile ? 250 : 150;
-      camera.position.z = baseZ + scrollZ;
+      // Smooth camera movement
+      scrollZ += (targetScrollZ - scrollZ) * 0.1;
+      camera.position.z = 120 + scrollZ;
+      camera.position.y = Math.sin(scrollZ * 0.005) * 30;
 
-      // Camera orbits
-      const realmY = realms[currentRealmIndex].y;
-      camera.position.y += (realmY - camera.position.y) * 0.05;
+      // Serpent writhes
+      serpent.rotation.z += 0.002;
+      serpent.position.x = Math.sin(time * 0.2) * 15;
+      serpent.position.y = Math.cos(time * 0.15) * 10;
 
-      // Yggdrasil pulses
-      yggdrasilGroup.children.forEach((child) => {
+      // Realms pulse
+      scene.children.forEach((child) => {
         if (child instanceof THREE.Mesh && (child.material as any).emissiveIntensity !== undefined) {
-          (child.material as any).emissiveIntensity = 0.5 + Math.sin(time) * 0.35;
+          (child.material as any).emissiveIntensity = 0.6 + Math.sin(time + Math.random()) * 0.3;
         }
       });
 
-      // Jörmungandr writhes
-      serpentGroup.position.x = Math.sin(time * 0.25) * 25;
-      serpentGroup.rotation.z += 0.0015;
-
       // Bloom pulse
-      bloomPass.strength = 2 + Math.sin(time * 0.5) * 0.6;
+      bloomPass.strength = 1.5 + Math.sin(time * 0.3) * 0.4;
 
       composer.render();
     };
@@ -276,16 +226,14 @@ export default function ProfessionalYggdrasil() {
     window.addEventListener('resize', handleResize);
   };
 
-  // Trigger init when canvas mounts
-  setTimeout(() => {
-    if (canvas) init();
-  }, 100);
-
+  // Init on ref callback
   return (
     <canvas
       ref={(el) => {
-        canvas = el as HTMLCanvasElement;
-        init();
+        if (el) {
+          canvas = el as HTMLCanvasElement;
+          setTimeout(() => init(), 50);
+        }
       }}
       style={{
         position: 'fixed',
