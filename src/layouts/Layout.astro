@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import FullThreeScene from '../components/FullThreeScene';
+import YggdrasilScene from '../components/YggdrasilScene';
 
 interface Props {
   title: string;
@@ -23,7 +23,7 @@ const { title } = Astro.props;
     <meta name="og:type" content="website" />
   </head>
   <body class="bg-black text-white" style="overflow: hidden;">
-    <FullThreeScene client:only="solid-js" />
+    <YggdrasilScene client:only="solid-js" />
   </body>
 </html>
 
