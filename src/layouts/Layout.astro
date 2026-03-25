@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import YggdrasilScene from '../components/YggdrasilScene';
+import ProfessionalYggdrasil from '../components/ProfessionalYggdrasil';
 
 interface Props {
   title: string;
@@ -23,7 +23,7 @@ const { title } = Astro.props;
     <meta name="og:type" content="website" />
   </head>
   <body class="bg-black text-white" style="overflow: hidden;">
-    <YggdrasilScene client:only="solid-js" />
+    <ProfessionalYggdrasil client:only="solid-js" />
   </body>
 </html>
 
