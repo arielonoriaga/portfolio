@@ -1,82 +1,61 @@
-name: Build & Deploy
+name: Deploy
 
 on:
   push:
     branches:
       - main
-      - develop
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
+    timeout-minutes: 10
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Notify deployment started
+        continue-on-error: true
+        run: |
+          curl -s -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}/admin/deploys" \
+            -H "X-Internal-Key: ${{ secrets.INTERNAL_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"status\":\"started\",\"repo\":\"${{ github.repository }}\",\"branch\":\"${{ github.ref_name }}\",\"commit\":\"${{ github.sha }}\"}"
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
 
-      - name: Build project
+      - name: Build Astro site
         run: bun run build
 
-      - name: Run type check
-        run: bun run build
+      - name: Deploy to VPS
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "dist/*"
+          target: "/var/www/arielonoriaga-portfolio"
+          strip_components: 1
+          rm: true
 
-      - name: Build Docker image
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: ls -lh /var/www/arielonoriaga-portfolio/index.html && echo "Deployment verified"
+
+      - name: Notify deployment result
+        if: always()
+        continue-on-error: true
         run: |
-          docker build -t portfolio:${{ github.sha }} .
-          docker tag portfolio:${{ github.sha }} portfolio:latest
-
-      - name: Deploy (if main branch)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        env:
-          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
-          
-          # Deploy via Docker Compose
-          ssh -i ~/.ssh/deploy_key $DEPLOY_USER@$DEPLOY_HOST << 'EOF'
-            cd ~/portfolio
-            git pull origin main
-            docker compose pull
-            docker compose up -d
-          EOF
-
-  quality:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build project
-        run: bun run build
-
-      - name: Check build output
-        run: |
-          if [ ! -d "dist" ]; then
-            echo "Build failed: dist directory not created"
-            exit 1
-          fi
-          echo "✓ Build successful"
+          STATUS="${{ job.status }}"
+          curl -s -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}/admin/deploys" \
+            -H "X-Internal-Key: ${{ secrets.INTERNAL_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"status\":\"$([ \"$STATUS\" = 'success' ] && echo success || echo failed)\",\"repo\":\"${{ github.repository }}\",\"branch\":\"${{ github.ref_name }}\",\"commit\":\"${{ github.sha }}\"}"
