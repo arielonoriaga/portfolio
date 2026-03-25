@@ -1,0 +1,227 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ParticlesHero from '../components/ParticlesHero';
+import ProjectCard3D from '../components/ProjectCard3D';
+import SkillsGrid from '../components/SkillsGrid';
+---
+
+<Layout title="Home">
+  <main class="min-h-screen bg-black text-white">
+    {/* Hero Section */}
+    <ParticlesHero client:load />
+
+    <section class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20">
+      <div class="max-w-4xl mx-auto text-center animate-fade-in">
+        <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+          Ship Products <br />
+          <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            That Scale
+          </span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+          Systems engineer with 4+ years shipping production systems. I build APIs, optimize infrastructure, and reduce costs by 90%.
+          Let's turn ideas into revenue.
+        </p>
+
+        <div class="flex flex-col md:flex-row gap-4 justify-center mb-12">
+          <a
+            href="#projects"
+            class="px-8 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition-colors transform hover:scale-105"
+          >
+            View Projects →
+          </a>
+          <a
+            href="mailto:onoriagaariel@gmail.com"
+            class="px-8 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105"
+          >
+            Let's Build
+          </a>
+        </div>
+
+        {/* Scroll hint */}
+        <div class="mt-12 animate-bounce">
+          <div class="text-gray-500 text-sm mb-2">Scroll to explore</div>
+          <svg
+            class="w-6 h-6 mx-auto text-gray-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    {/* About Section */}
+    <section class="relative z-10 py-20 px-4 bg-gradient-to-b from-transparent to-gray-950/50">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-4xl font-black mb-12 text-center">About</h2>
+
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+          <div class="p-6 rounded-lg border border-gray-800 bg-gray-950/50 hover:bg-gray-900 transition-colors">
+            <div class="text-3xl mb-3">💼</div>
+            <h3 class="font-bold text-lg mb-2">4+ Years</h3>
+            <p class="text-gray-400 text-sm">Building systems that ship to production. Systems engineering, infrastructure optimization, cost reduction.</p>
+          </div>
+
+          <div class="p-6 rounded-lg border border-gray-800 bg-gray-950/50 hover:bg-gray-900 transition-colors">
+            <div class="text-3xl mb-3">📊</div>
+            <h3 class="font-bold text-lg mb-2">Results</h3>
+            <p class="text-gray-400 text-sm">Delivered 90% cost reduction. 4.4x faster deployments. Multi-tenant SaaS built from scratch.</p>
+          </div>
+
+          <div class="p-6 rounded-lg border border-gray-800 bg-gray-950/50 hover:bg-gray-900 transition-colors">
+            <div class="text-3xl mb-3">⚙️</div>
+            <h3 class="font-bold text-lg mb-2">Architecture</h3>
+            <p class="text-gray-400 text-sm">DDD + clean architecture. Building systems that are maintainable, testable, and scalable.</p>
+          </div>
+        </div>
+
+        <div class="p-8 rounded-lg border border-gray-800 bg-gradient-to-r from-blue-950/20 to-purple-950/20">
+          <p class="text-gray-300 leading-relaxed">
+            I specialize in <strong>full-stack systems engineering</strong>. From core API design to deployment infrastructure, I think in systems. I love reducing toil through automation, cutting costs through smart architecture, and shipping features that users actually want.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Skills Section */}
+    <section class="relative z-10 py-20 px-4">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-4xl font-black mb-12 text-center">Skills & Tools</h2>
+        <SkillsGrid client:load />
+      </div>
+    </section>
+
+    {/* Projects Section */}
+    <section id="projects" class="relative z-10 py-20 px-4 bg-gradient-to-b from-gray-950/50 to-transparent">
+      <div class="max-w-5xl mx-auto">
+        <h2 class="text-4xl font-black mb-12 text-center">Featured Projects</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <ProjectCard3D
+            client:load
+            title="Huggian Management"
+            description="Full-stack SaaS platform. Multi-tenant billing, core API, production infrastructure."
+            metrics={['SaaS', 'Multi-tenant', 'TypeScript']}
+            technologies={['TypeScript', 'PostgreSQL', 'Docker', 'GitHub Actions']}
+            accentColor="#3B82F6"
+          />
+
+          <ProjectCard3D
+            client:load
+            title="Mudanzas Margarit"
+            description="4.4x faster deployments. 90% cost reduction through infrastructure optimization."
+            metrics={['4.4x faster', '90% savings', 'Go']}
+            technologies={['Go', 'Nginx', 'PostgreSQL', 'Docker']}
+            accentColor="#10B981"
+          />
+
+          <ProjectCard3D
+            client:load
+            title="Ez-Stock"
+            description="Rust + Go + AFIP integration. Real-time inventory with financial compliance."
+            metrics={['Rust', 'Go', 'AFIP API']}
+            technologies={['Rust', 'Go', 'PostgreSQL', 'gRPC']}
+            accentColor="#EC4899"
+          />
+
+          <ProjectCard3D
+            client:load
+            title="VueHicons"
+            description="Open-source npm package. 500+ SVG icon components. 2k+ GitHub stars."
+            metrics={['Open source', 'npm', '2k+ ⭐']}
+            technologies={['Vue', 'TypeScript', 'npm', 'Rollup']}
+            accentColor="#F97316"
+          />
+        </div>
+
+        <div class="bg-gray-950/50 border border-gray-800 rounded-lg p-8">
+          <h3 class="text-xl font-bold mb-4">Tech Highlights</h3>
+          <ul class="grid md:grid-cols-2 gap-4 text-gray-300">
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 font-bold mt-1">✓</span>
+              <span>Lighthouse 95+ scores. 0.8s load times. Performance-first mentality.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 font-bold mt-1">✓</span>
+              <span>DDD + clean architecture. Maintainable systems that scale.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 font-bold mt-1">✓</span>
+              <span>End-to-end testing. Confidence in production.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 font-bold mt-1">✓</span>
+              <span>Cost reduction engineering. 90% savings through optimization.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA Section */}
+    <section class="relative z-10 py-24 px-4 bg-gradient-to-b from-gray-950/50 to-black">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-black mb-6">Let's Build Something That Ships</h2>
+        <p class="text-xl text-gray-400 mb-8">
+          I'm looking for interesting problems to solve. If you're building something ambitious, let's talk.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="mailto:onoriagaariel@gmail.com"
+            class="px-8 py-4 bg-white text-black font-bold text-lg rounded-lg hover:bg-gray-200 transition-colors transform hover:scale-105"
+          >
+            onoriagaariel@gmail.com →
+          </a>
+          <a
+            href="https://github.com/arielonoriaga"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-8 py-4 border-2 border-white text-white font-bold text-lg rounded-lg hover:bg-white hover:text-black transition-colors transform hover:scale-105"
+          >
+            GitHub →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* Footer */}
+    <footer class="relative z-10 py-8 px-4 border-t border-gray-800 text-center text-gray-500">
+      <p>© 2024 Ariel Onoriaga. Built with Astro, SolidJS, Three.js, and shipped with confidence.</p>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+</style>
