@@ -452,7 +452,7 @@ const goatcounter = '';
   .btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--ink); }
   .btn.primary { background: var(--blue); color: #fff; }
 
-  .stage { position: relative; align-self: stretch; min-height: 26rem; }
+  .stage { position: relative; z-index: 2; align-self: stretch; min-height: 26rem; }
   .constellation { position: absolute; right: 0; top: 0; width: min(100%, 23rem); overflow: visible; }
   .links path { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 200; stroke-dashoffset: 0; opacity: 0.55; }
   .links .open { stroke-dasharray: 5 6; }
@@ -621,7 +621,9 @@ const goatcounter = '';
     .bubble span { animation: say 16s steps(1) infinite; opacity: 0; }
     .bubble span:nth-child(2) { animation-name: say2; }
     .bubble span:nth-child(3) { animation-name: say3; }
-    .crab:hover .crab-all { animation: spinhop 0.7s var(--ease) 1; }
+    .crab:hover .crab-all { animation: hoverhop 0.75s cubic-bezier(0.3, 0, 0.4, 1) infinite; }
+    .crab:hover .arm-l { animation: cheer 0.25s steps(2) infinite; }
+    .crab:hover .arm-r { animation: cheer 0.25s steps(2) -0.12s infinite; }
     .slot.out { animation: glow 2.4s ease-in-out infinite; }
     .bench .grid .slot { animation: feed 2.4s steps(1) infinite; }
     .bench .grid .slot:nth-child(2) { animation-delay: 0.3s; } .bench .grid .slot:nth-child(3) { animation-delay: 0.6s; } .bench .grid .slot:nth-child(4) { animation-delay: 0.9s; }
@@ -656,7 +658,8 @@ const goatcounter = '';
   @keyframes say { 0%, 37%, 51%, 100% { opacity: 0; } 38%, 50% { opacity: 1; } }
   @keyframes say2 { 0%, 9%, 26%, 100% { opacity: 0; } 10%, 25% { opacity: 1; } }
   @keyframes say3 { 0%, 61%, 78%, 100% { opacity: 0; } 62%, 77% { opacity: 1; } }
-  @keyframes spinhop { 0% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-46px) rotate(180deg); } 100% { transform: translateY(0) rotate(360deg); } }
+  @keyframes hoverhop { 0%, 100% { transform: translateY(0) scale(1, 1); } 18% { transform: translateY(8px) scale(1.14, 0.82); } 50% { transform: translateY(-80px) scale(0.93, 1.1); } 82% { transform: translateY(0) scale(1.1, 0.88); } 91% { transform: translateY(-14px) scale(1, 1); } }
+  @keyframes cheer { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg); } }
   @keyframes glow { 50% { box-shadow: inset 3px 3px 0 oklch(92% 0.09 90), inset -3px -3px 0 oklch(66% 0.14 75), 0 0 0 6px oklch(80% 0.15 85 / 0.35); } }
   @keyframes feed { 0%, 100% { background: oklch(86% 0.02 250); } 12% { background: var(--gold); } }
   @keyframes nudge { 50% { translate: 5px 0; } }
