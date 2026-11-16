@@ -63,7 +63,7 @@ export const sideQuests = [
 export const experience = [
   {
     role: 'Core engineer, real-money gaming platform',
-    when: 'Aug 2024 – present',
+    when: 'Dec 2021 – present',
     status: 'Active',
     points: [
       'Core engineer on a multi-tenant gaming platform (remote game server and back office): a Go and TypeScript monorepo on AWS serverless. About 3,700 commits, roughly 38% of the codebase.',
@@ -81,7 +81,7 @@ export const experience = [
   },
   {
     role: 'Trainee to team lead, PicallEx',
-    when: 'Earlier',
+    when: 'Jun 2020 – Jan 2022',
     status: 'Completed',
     points: ['Joined as a trainee and was leading a team of seven engineers in under two years.'],
   },
