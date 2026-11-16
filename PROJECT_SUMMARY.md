@@ -52,7 +52,7 @@ Live: `arielonoriaga.huggian.com`
 
 2. **About Section**
    - 3-column grid of value props
-   - 6+ years experience
+   - 7+ years experience
    - Results-driven messaging (90% cost reduction, 4.4x faster)
    - Architecture philosophy (DDD + clean code)
 
@@ -263,7 +263,7 @@ git push origin main
 **Architecture**: DDD, E2E Testing  
 
 ### Metrics Highlighted
-- 6+ years experience
+- 7+ years experience
 - 90% cost reduction (Mudanzas Margarit)
 - 4.4x faster deployments
 - Lighthouse 95+ scores

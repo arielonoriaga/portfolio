@@ -147,7 +147,7 @@ export default function FullThreeScene() {
     scene.add(aboutGroup);
 
     const aboutCards = [
-      { title: '6+ Years', desc: 'Building systems' },
+      { title: '7+ Years', desc: 'Building systems' },
       { title: 'Results', desc: '90% cost reduction' },
       { title: 'Architecture', desc: 'DDD + Clean' },
     ];
