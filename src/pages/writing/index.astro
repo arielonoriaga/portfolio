@@ -1,0 +1,67 @@
+---
+import { site, person, mailto } from '../../data/profile';
+import { posts } from '../../data/writing';
+const title = `Writing — ${person.name}`;
+const description = 'Field notes from building payments, billing and commerce backends in Rust.';
+const fmt = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={`${site}/writing/`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Pixelify+Sans:wght@500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="bar">
+      <a class="home" href="/"><img src="/favicon.svg" alt="" width="30" height="30" /><span>{person.name}</span></a>
+      <nav><a href="/writing/">Writing</a><a href="/cv/">CV</a><a href={mailto}>Email</a></nav>
+    </header>
+    <main>
+      <p class="tag">Field notes</p>
+      <h1>Writing</h1>
+      <p class="dek">{description}</p>
+      <ul class="posts">
+        {posts.map((p) => (
+          <li>
+            <p class="meta"><time datetime={p.date}>{fmt(p.date)}</time></p>
+            <h2><a href={`/writing/${p.slug}/`}>{p.title}</a></h2>
+            <p>{p.description}</p>
+          </li>
+        ))}
+      </ul>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(:root) { --void: oklch(98% 0.006 240); --ink: oklch(24% 0.045 255); --ink-soft: oklch(42% 0.04 250); --blue: oklch(50% 0.2 235); --blue-deep: oklch(40% 0.18 240); --orange: oklch(68% 0.17 50); }
+  :global(body) { margin: 0; background: var(--void); color: var(--ink); font-family: 'Figtree', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 1.0625rem; line-height: 1.6; }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; max-width: 62rem; margin: 0 auto; padding: 1rem 1.25rem; border-bottom: 3px solid var(--ink); }
+  .home { display: flex; align-items: center; gap: 0.55rem; color: var(--ink); text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  nav { display: flex; gap: 1.25rem; font-family: 'Pixelify Sans', monospace; }
+  nav a { color: var(--ink); text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  main { max-width: 62rem; margin: 0 auto; padding: clamp(2rem, 6vw, 4rem) 1.25rem 4rem; }
+  .tag { display: inline-block; font-family: 'Pixelify Sans', monospace; line-height: 1; color: var(--void); background: var(--ink); padding: 0.4rem 0.7rem 0.35rem; margin: 0 0 1.1rem; }
+  h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1; letter-spacing: -0.03em; margin: 0 0 1rem; }
+  .dek { font-size: 1.2rem; color: var(--ink-soft); max-width: 38rem; margin: 0 0 2.5rem; }
+  .posts { list-style: none; margin: 0; padding: 0; max-width: 46rem; }
+  .posts li { padding: 1.5rem 0; border-top: 3px solid var(--ink); }
+  .meta { font-family: 'Pixelify Sans', monospace; color: var(--blue-deep); margin: 0 0 0.4rem; }
+  h2 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.4rem, 3vw, 1.9rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+  h2 a { color: var(--ink); text-decoration-color: var(--orange); text-decoration-thickness: 4px; text-underline-offset: 0.18em; }
+  h2 a:hover { color: var(--blue-deep); }
+  .posts p:last-child { margin: 0; color: var(--ink-soft); }
+</style>

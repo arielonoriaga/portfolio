@@ -9,6 +9,7 @@ import {
   email, mailto, site, person, description, offers, faq, achievements, mainQuest, crafting, sideQuests,
   experience, openSource, hotbar, skills,
 } from '../data/profile';
+import { posts } from '../data/writing';
 
 const title = `${person.name} — Senior Rust engineer for payments, billing and commerce backends`;
 const jsonLd = {
@@ -297,6 +298,19 @@ const goatcounter = '';
         </ul>
       </section>
 
+      <section id="writing">
+        <p class="tag" aria-hidden="true">Field notes</p>
+        <h2 class="h">Writing</h2>
+        <ul class="oss notes">
+          {posts.map((p) => (
+            <li>
+              <a href={`/writing/${p.slug}/`}>{p.title}</a>
+              <p>{p.description}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section id="skills">
         <p class="tag" aria-hidden="true">Inventory</p>
         <h2 class="h">Skills</h2>
@@ -350,6 +364,7 @@ const goatcounter = '';
         <a href="https://github.com/arielonoriaga">GitHub</a> ·
         <a href="https://www.linkedin.com/in/arielonoriaga/">LinkedIn</a> ·
         <a href="https://crates.io/users/arielonoriaga">crates.io</a> ·
+        <a href="/writing/">Writing</a> ·
         <a href="/cv/">CV</a>
       </p>
     </footer>
@@ -553,6 +568,7 @@ const goatcounter = '';
   .oss a:hover { color: var(--blue-deep); }
   .oss .lang { margin-left: 0.6rem; }
   .oss p { margin: 0.45rem 0 0; color: var(--ink-soft); font-size: 0.99rem; }
+  .notes a { font-size: 1.2rem; line-height: 1.25; text-decoration-color: var(--orange); }
 
   .hotbar { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.4rem; margin: 0 0 1.75rem; width: fit-content; max-width: 100%; background: var(--ink); }
   .hotbar li { position: relative; display: grid; place-items: center; width: 5.6rem; height: 4.4rem; margin: 0; font-family: var(--pixel); font-size: 1rem;

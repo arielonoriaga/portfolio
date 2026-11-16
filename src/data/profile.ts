@@ -155,7 +155,7 @@ export const mailto =
 export const offers = [
   {
     title: 'Payments that survive retries',
-    text: 'Payment-provider integrations built so a timeout, a duplicate webhook or a retry never charges twice or loses an order: idempotency keys and a transactional outbox.',
+    text: 'Payment-provider integrations built so a timeout, a duplicate webhook or a retry never charges twice or loses an order: idempotency keys, guarded state transitions and a transactional outbox for the events that follow.',
     proof: 'Done in Ez-Stock, in production.',
   },
   {
