@@ -85,7 +85,8 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   .record figcaption { margin-top: 0.9rem; color: var(--ink-soft); font-size: 0.97rem; line-height: 1.5; }
   .record figcaption strong { color: var(--ink); font-family: var(--display); font-weight: 800; }
 
-  .cal-scroll { overflow-x: auto; }
+  .cal-scroll { overflow-x: auto; direction: rtl; }
+  .cal-scroll svg { direction: ltr; }
   .cal svg { display: block; width: 100%; min-width: 640px; height: auto; }
   .mlabel { font-family: var(--pixel); font-size: 9px; fill: var(--ink-soft); }
   .cal rect { stroke: oklch(24% 0.045 255 / 0.08); stroke-width: 1; }
@@ -103,9 +104,10 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   .nums dd { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 4.2vw, 2.8rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
   .nums dl div:first-child dd { color: var(--orange); }
 
-  .hgrid { display: grid; grid-template-columns: 2.4rem repeat(16, 1fr); gap: 3px; align-items: center; }
+  .hgrid { display: grid; grid-template-columns: 2.4rem repeat(16, minmax(0, 1fr)); gap: 3px; align-items: center; }
   .hgrid i { aspect-ratio: 1.15; border-radius: 2px; background: color-mix(in oklch, var(--orange) calc(var(--v) * 100%), oklch(95% 0.02 60)); }
   .dl, .hl { font-family: var(--pixel); font-size: 0.75rem; color: var(--ink-soft); line-height: 1; }
+  .hl { white-space: nowrap; overflow: visible; }
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
