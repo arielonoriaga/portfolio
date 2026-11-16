@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#161412"/><text x="32" y="43" font-family="Georgia,serif" font-size="30" font-weight="700" text-anchor="middle" fill="#e8a068">AO</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <g id="crab" stroke="#16233b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="2" width="60" height="60" rx="10" fill="#cfe5f7" stroke="none"/>
+    <path d="M17 44 Q9 46 8 54M47 44 Q55 46 56 54M22 47 Q18 52 18 57M42 47 Q46 52 46 57" fill="none"/>
+    <path d="M14 36 Q5 32 7 22" fill="none"/><path d="M50 36 Q59 32 57 22" fill="none"/>
+    <circle cx="8" cy="18" r="6" fill="#d2453a"/><circle cx="56" cy="18" r="6" fill="#d2453a"/>
+    <path d="M25 30 V20M39 30 V20" fill="none"/>
+    <ellipse cx="32" cy="40" rx="20" ry="13" fill="#d2453a"/>
+    <ellipse cx="25" cy="16" rx="6" ry="8" fill="#fff"/><ellipse cx="39" cy="16" rx="6" ry="8" fill="#fff"/>
+    <ellipse cx="26" cy="18" rx="2.6" ry="4" fill="#16233b" stroke="none"/><ellipse cx="40" cy="18" rx="2.6" ry="4" fill="#16233b" stroke="none"/>
+    <path d="M24 41 Q32 50 40 41 Z" fill="#16233b"/>
+  </g>
+</svg>
