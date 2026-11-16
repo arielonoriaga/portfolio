@@ -4,6 +4,8 @@ import { site, person, email, mailto } from '../data/profile';
 const { frontmatter } = Astro.props;
 const { title, description, date } = frontmatter;
 const url = new URL(Astro.url.pathname, site).href;
+const slug = Astro.url.pathname.replace(/\/$/, '').split('/').pop();
+const image = `${site}/og/${slug}.png`;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -13,7 +15,7 @@ const jsonLd = {
   dateModified: date,
   url,
   mainEntityOfPage: url,
-  image: `${site}/og.png`,
+  image,
   author: { '@type': 'Person', '@id': `${site}/#ariel`, name: person.name, url: `${site}/` },
 };
 const nice = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -32,7 +34,10 @@ const nice = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: '
     <meta property="og:description" content={description} />
     <meta property="og:type" content="article" />
     <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${site}/og.png`} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:image" content={image} />
     <meta property="article:published_time" content={date} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

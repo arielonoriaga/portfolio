@@ -14,6 +14,10 @@ const title = `${person.name} — CV`;
     <title>{title}</title>
     <meta name="description" content={`CV of ${person.name}: ${person.role}.`} />
     <link rel="canonical" href={`${site}/cv/`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={`CV of ${person.name}: ${person.role}.`} />
+    <meta property="og:image" content={`${site}/og/cv.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

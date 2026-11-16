@@ -1,0 +1,29 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Chango&family=Pixelify+Sans:wght@500&family=Syne:wght@700;800&family=Figtree:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(oklch(91% 0.045 235), oklch(97% 0.008 240)); font-family: 'Figtree', sans-serif; color: oklch(24% 0.045 255); position: relative; }
+  .card { position: absolute; left: 64px; top: 52px; right: 230px; bottom: 112px; background: #fff; border: 5px solid oklch(24% 0.045 255); box-shadow: 14px 14px 0 oklch(24% 0.045 255); padding: 46px 52px; display: flex; flex-direction: column; justify-content: space-between; }
+  .tag { align-self: flex-start; font-family: 'Pixelify Sans', monospace; font-size: 26px; background: oklch(24% 0.045 255); color: #fff; padding: 8px 16px 6px; }
+  h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: var(--size, 62px); line-height: 1.04; letter-spacing: -0.025em; }
+  .meta { display: flex; justify-content: space-between; align-items: end; gap: 24px; font-family: 'Pixelify Sans', monospace; font-size: 26px; color: oklch(42% 0.04 250); }
+  .name { font-family: 'Chango', serif; font-size: 34px; color: oklch(60% 0.19 28); -webkit-text-stroke: 1.5px oklch(24% 0.045 255); paint-order: stroke fill; }
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; border-top: 5px solid oklch(24% 0.045 255); background: linear-gradient(oklch(66% 0.15 150) 0 18px, oklch(55% 0.08 60) 18px); }
+  .crab { position: absolute; right: 40px; bottom: 50px; width: 160px; border-radius: 22px; }
+  .accent { position: absolute; left: 64px; top: 52px; width: 14px; bottom: 112px; background: var(--accent, oklch(68% 0.17 50)); }
+</style></head>
+<body>
+  <div class="card"><span class="tag" id="tag"></span><h1 id="title"></h1><div class="meta"><span class="name">Ariel Onoriaga</span><span id="meta"></span></div></div>
+  <div class="accent"></div>
+  <div class="ground"></div>
+  <img class="crab" src="/favicon.svg" alt="">
+  <script>
+    const q = new URLSearchParams(location.search);
+    document.getElementById('tag').textContent = q.get('tag');
+    document.getElementById('title').textContent = q.get('title');
+    document.getElementById('meta').textContent = q.get('meta');
+    if (q.get('size')) document.body.style.setProperty('--size', q.get('size') + 'px');
+    if (q.get('accent')) document.body.style.setProperty('--accent', q.get('accent'));
+  </script>
+</body></html>
