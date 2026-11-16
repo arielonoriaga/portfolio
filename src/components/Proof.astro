@@ -1,0 +1,120 @@
+---
+// "Stats screen": the shipping record as real charts. All figures come from src/data/proof.ts.
+import { contributions, ezStock, shopRhythm } from '../data/proof';
+
+const nf = new Intl.NumberFormat('en-US');
+const CELL = 11;
+const GAP = 3;
+const weeks = contributions.weeks;
+const max = Math.max(...weeks.flat());
+// Five steps, like a contribution graph: 0, then quartiles of the busiest day.
+const level = (n: number) => (n === 0 ? 0 : n < max * 0.08 ? 1 : n < max * 0.2 ? 2 : n < max * 0.45 ? 3 : 4);
+const W = weeks.length * (CELL + GAP);
+const H = 7 * (CELL + GAP);
+// Label a week with its month when the month changes (weeks start on Sunday; the first
+// column may begin before \`from\`, exactly as GitHub's own calendar does).
+const start = new Date(`${contributions.from}T12:00:00Z`);
+start.setUTCDate(start.getUTCDate() - start.getUTCDay());
+const MONTH_LABELS = weeks.flatMap((_, x) => {
+  const d = new Date(start.getTime() + x * 7 * 86400000);
+  const prev = new Date(d.getTime() - 7 * 86400000);
+  return x > 0 && d.getUTCMonth() !== prev.getUTCMonth() && x < weeks.length - 2
+    ? [{ x, m: d.toLocaleString('en-US', { month: 'short', timeZone: 'UTC' }) }]
+    : [];
+});
+
+const heat = shopRhythm.heat;
+const heatMax = Math.max(...heat.flat());
+const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+---
+<section id="record" class="record" aria-labelledby="record-h">
+  <p class="tag" aria-hidden="true">Stats screen</p>
+  <h2 class="h" id="record-h">Shipping record</h2>
+
+  <figure class="panel cal">
+    <div class="cal-scroll">
+      <svg viewBox={`0 0 ${W} ${H + 18}`} role="img"
+        aria-label={`GitHub contributions over the past year: ${nf.format(contributions.total)} contributions on ${contributions.activeDays} days.`}>
+        {MONTH_LABELS.map(({ x, m }) => <text class="mlabel" x={x * (CELL + GAP)} y="9">{m}</text>)}
+        {weeks.map((w, x) => (
+          <g class="col" style={`--x:${x}`}>
+            {w.map((n, y) => <rect x={x * (CELL + GAP)} y={18 + y * (CELL + GAP)} width={CELL} height={CELL} rx="2" class={`l${level(n)}`} />)}
+          </g>
+        ))}
+      </svg>
+    </div>
+    <figcaption>
+      <strong>{nf.format(contributions.total)}</strong> contributions on GitHub in the past year, on
+      {' '}{contributions.activeDays} different days. Almost all of it ({nf.format(contributions.privateShare)}) is in private repositories.
+    </figcaption>
+  </figure>
+
+  <div class="duo">
+    <figure class="panel nums">
+      <p class="kind">Ez-Stock in production, since March 2026</p>
+      <dl>
+        <div><dt>Releases</dt><dd>{nf.format(ezStock.releases)}</dd></div>
+        <div><dt>Database migrations</dt><dd>{nf.format(ezStock.migrations)}</dd></div>
+        <div><dt>Commits, last 60 days</dt><dd>{nf.format(ezStock.commits60d)}</dd></div>
+      </dl>
+      <figcaption>Small, frequent releases are how one engineer keeps a live product safe to change.</figcaption>
+    </figure>
+
+    <figure class="panel rhythm">
+      <p class="kind">When the shops on Ez-Stock sell</p>
+      <div class="hgrid" role="img"
+        aria-label={`Heat map of ${nf.format(shopRhythm.sales)} sales by weekday and hour: busiest from 7 to 10 pm, especially Friday and Saturday.`}>
+        {heat.map((row, d) => (
+          <>
+            <span class="dl">{DOW[d]}</span>
+            {row.map((v) => <i style={`--v:${(v / heatMax).toFixed(2)}`}></i>)}
+          </>
+        ))}
+        <span></span>
+        {Array.from({ length: 16 }, (_, h) => <span class="hl">{h % 4 === 0 ? `${8 + h}h` : ''}</span>)}
+      </div>
+      <figcaption>
+        {nf.format(shopRhythm.sales)} real sales over {shopRhythm.days} days, across {shopRhythm.shops} shops. Anonymous totals: no shop or customer is identifiable.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .record .panel { margin: 0; border: 3px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--ink); padding: clamp(1rem, 2.6vw, 1.5rem); }
+  .record figcaption { margin-top: 0.9rem; color: var(--ink-soft); font-size: 0.97rem; line-height: 1.5; }
+  .record figcaption strong { color: var(--ink); font-family: var(--display); font-weight: 800; }
+
+  .cal-scroll { overflow-x: auto; }
+  .cal svg { display: block; width: 100%; min-width: 640px; height: auto; }
+  .mlabel { font-family: var(--pixel); font-size: 9px; fill: var(--ink-soft); }
+  .cal rect { stroke: oklch(24% 0.045 255 / 0.08); stroke-width: 1; }
+  .l0 { fill: oklch(94% 0.012 245); }
+  .l1 { fill: oklch(85% 0.07 152); }
+  .l2 { fill: oklch(74% 0.13 152); }
+  .l3 { fill: oklch(62% 0.15 152); }
+  .l4 { fill: oklch(48% 0.13 155); }
+
+  .duo { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.75rem; margin-top: 1.75rem; align-items: start; }
+  .record .kind { margin: 0 0 0.9rem; }
+  .nums dl { margin: 0; display: grid; gap: 0.9rem; }
+  .nums dl div { display: grid; gap: 0.1rem; padding-bottom: 0.75rem; border-bottom: 2px dashed oklch(86% 0.02 245); }
+  .nums dt { font-family: var(--pixel); font-size: 0.95rem; color: var(--ink-soft); }
+  .nums dd { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 4.2vw, 2.8rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+  .nums dl div:first-child dd { color: var(--orange); }
+
+  .hgrid { display: grid; grid-template-columns: 2.4rem repeat(16, 1fr); gap: 3px; align-items: center; }
+  .hgrid i { aspect-ratio: 1.15; border-radius: 2px; background: color-mix(in oklch, var(--orange) calc(var(--v) * 100%), oklch(95% 0.02 60)); }
+  .dl, .hl { font-family: var(--pixel); font-size: 0.75rem; color: var(--ink-soft); line-height: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .cal .col { animation: rise linear both; animation-timeline: view(); animation-range: entry 10% entry 60%; }
+      .nums dd { animation: pop linear both; animation-timeline: view(); animation-range: entry 20% entry 70%; }
+    }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.85); } }
+
+  @media (max-width: 56rem) { .duo { grid-template-columns: 1fr; } }
+</style>

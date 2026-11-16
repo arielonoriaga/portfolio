@@ -2,6 +2,7 @@
 // the same data as the pages so the facts cannot drift.
 import type { APIRoute } from 'astro';
 import { posts } from '../data/writing';
+import { contributions, ezStock, shopRhythm } from '../data/proof';
 import { email, site, person, summary, offers, faq, mainQuest, crafting, sideQuests, experience, openSource, hotbar, skills } from '../data/profile';
 
 export const GET: APIRoute = () => {
@@ -20,6 +21,11 @@ export const GET: APIRoute = () => {
     `- GitHub: ${person.github}`,
     `- LinkedIn: ${person.linkedin}`,
     `- crates.io: ${person.crates}`,
+    '',
+    '## Shipping record',
+    `- ${contributions.total} GitHub contributions between ${contributions.from} and ${contributions.to}, on ${contributions.activeDays} days (${contributions.privateShare} in private repositories).`,
+    `- Ez-Stock: ${ezStock.releases} production releases and ${ezStock.migrations} database migrations since ${ezStock.since}.`,
+    `- Shops using Ez-Stock recorded ${shopRhythm.sales} sales over ${shopRhythm.days} days across ${shopRhythm.shops} shops.`,
     '',
     '## What he does for clients',
     ...offers.map((o) => `- ${o.title}: ${o.text}`),

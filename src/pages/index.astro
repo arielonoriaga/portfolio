@@ -10,6 +10,7 @@ import {
   experience, openSource, hotbar, skills,
 } from '../data/profile';
 import { posts } from '../data/writing';
+import Proof from '../components/Proof.astro';
 
 const title = `${person.name} — Senior Rust engineer for payments, billing and commerce backends`;
 const jsonLd = {
@@ -192,6 +193,8 @@ const goatcounter = '';
           ))}
         </ul>
       </section>
+
+      <Proof />
 
       <section id="services">
         <p class="tag" aria-hidden="true">Party role</p>
