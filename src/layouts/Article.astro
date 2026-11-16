@@ -1,0 +1,112 @@
+---
+// Layout for write-ups. Calmer than the home page: the reader came for the text.
+import { site, person, email, mailto } from '../data/profile';
+const { frontmatter } = Astro.props;
+const { title, description, date } = frontmatter;
+const url = new URL(Astro.url.pathname, site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  url,
+  mainEntityOfPage: url,
+  image: `${site}/og.png`,
+  author: { '@type': 'Person', '@id': `${site}/#ariel`, name: person.name, url: `${site}/` },
+};
+const nice = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — {person.name}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={person.name} />
+    <link rel="canonical" href={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <meta property="article:published_time" content={date} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Pixelify+Sans:wght@500&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <header class="bar">
+      <a class="home" href="/"><img src="/favicon.svg" alt="" width="30" height="30" /><span>{person.name}</span></a>
+      <nav><a href="/writing/">Writing</a><a href="/cv/">CV</a><a href={mailto}>Email</a></nav>
+    </header>
+    <main>
+      <article>
+        <p class="tag">Field notes</p>
+        <h1>{title}</h1>
+        <p class="meta">{person.name} · <time datetime={date}>{nice}</time></p>
+        <p class="dek">{description}</p>
+        <div class="prose"><slot /></div>
+      </article>
+      <aside class="hire">
+        <h2>Need this kind of work done?</h2>
+        <p>
+          I’m a senior Rust engineer for payments, billing and commerce backends, available on
+          contract to US teams. Send three lines: what you’re building, what’s stuck, and your timeline.
+        </p>
+        <p><a class="btn" href={mailto}>{email}</a> <a class="plain" href="/">More about me →</a></p>
+      </aside>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --void: oklch(98% 0.006 240); --deep: oklch(95.5% 0.012 240); --ink: oklch(24% 0.045 255); --ink-soft: oklch(42% 0.04 250);
+    --blue: oklch(50% 0.2 235); --blue-deep: oklch(40% 0.18 240); --gold: oklch(80% 0.15 85); --orange: oklch(68% 0.17 50);
+    --display: 'Syne', 'Avenir Next', 'Segoe UI', sans-serif;
+    --pixel: 'Pixelify Sans', ui-monospace, monospace;
+    --body: 'Figtree', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--void); color: var(--ink); font-family: var(--body); font-size: 1.125rem; line-height: 1.7; }
+  a { color: var(--blue-deep); text-underline-offset: 0.2em; text-decoration-thickness: 2px; }
+  a:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; max-width: 62rem; margin: 0 auto; padding: 1rem 1.25rem; border-bottom: 3px solid var(--ink); }
+  .home { display: flex; align-items: center; gap: 0.55rem; color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 0.95rem; letter-spacing: 0.14em; text-transform: uppercase; }
+  .bar nav { display: flex; gap: 1.25rem; font-family: var(--pixel); font-size: 1rem; }
+  .bar nav a { color: var(--ink); text-decoration: none; }
+  .bar nav a:hover { color: var(--blue-deep); text-decoration: underline; }
+  main { max-width: 62rem; margin: 0 auto; padding: clamp(2rem, 6vw, 4rem) 1.25rem 4rem; }
+  article { max-width: 44rem; }
+  .tag { display: inline-block; font-family: var(--pixel); font-size: 1rem; line-height: 1; color: var(--void); background: var(--ink); padding: 0.4rem 0.7rem 0.35rem; margin: 0 0 1.1rem; }
+  h1 { font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 5.2vw, 3.4rem); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 1rem; text-wrap: balance; }
+  .meta { font-family: var(--pixel); font-size: 1rem; color: var(--ink-soft); margin: 0 0 1.5rem; }
+  .dek { font-family: var(--display); font-weight: 700; font-size: clamp(1.2rem, 2.4vw, 1.5rem); line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 2.5rem; padding-left: 1rem; border-left: 6px solid var(--orange); }
+  .prose h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -0.02em; margin: 2.75rem 0 0.9rem; }
+  .prose h3 { font-family: var(--display); font-weight: 700; font-size: 1.25rem; margin: 2rem 0 0.6rem; }
+  .prose p, .prose ul, .prose ol { margin: 0 0 1.15rem; }
+  .prose li { margin-bottom: 0.4rem; }
+  .prose code { font-family: var(--mono); font-size: 0.86em; background: var(--deep); padding: 0.1em 0.35em; border: 1px solid oklch(86% 0.02 245); }
+  .prose pre { font-family: var(--mono); font-size: 0.86rem; line-height: 1.55; padding: 1.1rem 1.2rem; margin: 0 0 1.4rem; overflow-x: auto; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+  .prose pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+  .prose blockquote { margin: 0 0 1.15rem; padding: 0.2rem 0 0.2rem 1rem; border-left: 6px solid var(--gold); color: var(--ink-soft); }
+  .prose table { border-collapse: collapse; width: 100%; margin: 0 0 1.4rem; font-size: 1rem; }
+  .prose th, .prose td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 2px solid var(--ink); vertical-align: top; }
+  .prose th { font-family: var(--pixel); font-weight: 500; }
+  .hire { max-width: 44rem; margin-top: 3.5rem; background: var(--ink); color: var(--void); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 8px 8px 0 var(--blue); }
+  .hire h2 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0 0 0.6rem; }
+  .hire p { margin: 0 0 1rem; }
+  .hire p:last-child { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; }
+  .btn { display: inline-block; padding: 0.6rem 1.1rem; border: 3px solid var(--void); background: var(--blue); color: #fff; text-decoration: none; font-weight: 700; box-shadow: 4px 4px 0 var(--gold); }
+  .hire .plain { color: var(--void); }
+</style>
