@@ -1,32 +1,9 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import solidJs from '@astrojs/solid-js';
 
-// https://astro.build/config
+// Static, zero-JavaScript site: one page, readable without a browser engine.
 export default defineConfig({
-  vite: {
-    ssr: {
-      external: ['three'],
-    },
-    build: {
-      minify: 'terser',
-      sourcemap: false,
-    },
-  },
-
-  integrations: [solidJs()],
-
+  site: 'https://arielonoriaga.huggian.com',
   output: 'static',
-
-  // Optimization
   compressHTML: true,
-
-  build: {
-    assets: '_astro',
-    inlineAssets: true,
-  },
-
-  image: {
-    service: { entrypoint: 'astro/assets/services/sharp' },
-  },
 });
