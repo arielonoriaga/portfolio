@@ -23,7 +23,7 @@ export const GET: APIRoute = () => {
     `- crates.io: ${person.crates}`,
     '',
     '## Shipping record',
-    `- ${contributions.total} GitHub contributions between ${contributions.from} and ${contributions.to}, on ${contributions.activeDays} days (${contributions.privateShare} in private repositories).`,
+    `- ${contributions.total} GitHub contributions between ${contributions.from} and ${contributions.to}, on ${contributions.activeDays} days: ${contributions.work} at his day job and ${contributions.personal} on his own products (two accounts, nearly all private repositories).`,
     `- Ez-Stock: ${ezStock.releases} production releases and ${ezStock.migrations} database migrations since ${ezStock.since}.`,
     `- Shops using Ez-Stock recorded ${shopRhythm.sales} sales over ${shopRhythm.days} days across ${shopRhythm.shops} shops.`,
     '',

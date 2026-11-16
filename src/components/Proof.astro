@@ -34,7 +34,7 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   <figure class="panel cal">
     <div class="cal-scroll">
       <svg viewBox={`0 0 ${W} ${H + 18}`} role="img"
-        aria-label={`GitHub contributions over the past year: ${nf.format(contributions.total)} contributions on ${contributions.activeDays} days.`}>
+        aria-label={`GitHub contributions over the past year, work and personal accounts combined: ${nf.format(contributions.total)} contributions on ${contributions.activeDays} days.`}>
         {MONTH_LABELS.map(({ x, m }) => <text class="mlabel" x={x * (CELL + GAP)} y="9">{m}</text>)}
         {weeks.map((w, x) => (
           <g class="col" style={`--x:${x}`}>
@@ -45,7 +45,8 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     </div>
     <figcaption>
       <strong>{nf.format(contributions.total)}</strong> contributions on GitHub in the past year, on
-      {' '}{contributions.activeDays} different days. Almost all of it ({nf.format(contributions.privateShare)}) is in private repositories.
+      {' '}{contributions.activeDays} different days: {nf.format(contributions.work)} at my day job and
+      {' '}{nf.format(contributions.personal)} on my own products, across two accounts. Nearly all of it is in private repositories.
     </figcaption>
   </figure>
 
