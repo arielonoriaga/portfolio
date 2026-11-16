@@ -39,6 +39,27 @@ If the insert returns a row, this request owns the key and runs the handler. If 
 | Same key, first request still running | Waits up to two seconds, then `409 IDEMPOTENCY_KEY_IN_FLIGHT` |
 | Same key, different body | `422 IDEMPOTENCY_KEY_CONFLICT` |
 
+<figure class="diagram">
+<svg viewBox="0 0 720 345" role="img" aria-labelledby="d1t d1d">
+<title id="d1t">One idempotency key, three requests</title>
+<desc id="d1d">A sequence diagram. The first request claims the key and runs the handler. A duplicate that arrives while it is running gets 409. After the response is stored, a replay gets the stored response and the handler does not run again.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="context-stroke"/></marker></defs>
+<text class="lane" x="110" y="28">POS client</text><line class="life" x1="110" y1="42" x2="110" y2="330"/>
+<text class="lane" x="360" y="28">API</text><line class="life" x1="360" y1="42" x2="360" y2="330"/>
+<text class="lane" x="610" y="28">idempotency_keys</text><line class="life" x1="610" y1="42" x2="610" y2="330"/>
+<rect class="run s2" x="352" y="108" width="16" height="108"/><text class="note s2" x="376" y="166">handler running</text>
+<g class="msg s1 "><path pathLength="1" d="M110 78 H360" marker-end="url(#ah)"/><text x="235.0" y="71">POST /charge · key abc</text></g>
+<g class="msg s2 "><path pathLength="1" d="M360 108 H610" marker-end="url(#ah)"/><text x="485.0" y="101">claim key abc</text></g>
+<g class="msg s3 "><path pathLength="1" d="M110 150 H360" marker-end="url(#ah)"/><text x="235.0" y="143">retry · same key</text></g>
+<g class="msg s4 bad"><path pathLength="1" d="M360 176 H110" marker-end="url(#ah)"/><text x="235.0" y="169">409 in flight</text></g>
+<g class="msg s5 "><path pathLength="1" d="M360 216 H610" marker-end="url(#ah)"/><text x="485.0" y="209">store response</text></g>
+<g class="msg s6 "><path pathLength="1" d="M360 242 H110" marker-end="url(#ah)"/><text x="235.0" y="235">200 OK</text></g>
+<g class="msg s7 "><path pathLength="1" d="M110 284 H360" marker-end="url(#ah)"/><text x="235.0" y="277">retry · same key</text></g>
+<g class="msg s8 good"><path pathLength="1" d="M360 310 H110" marker-end="url(#ah)"/><text x="235.0" y="303">200 replayed · handler not run</text></g>
+</svg>
+<figcaption>One key, three requests. The duplicate that arrives mid-flight is refused, and the replay after completion gets the stored response. The handler runs exactly once.</figcaption>
+</figure>
+
 Four details matter more than the happy path.
 
 **A duplicate never falls through to the handler.** When the first request is slow, the tempting fix is to let the second one run after a timeout. The first request may still be inside an external billing call. So the duplicate gets a 409 and the client retries later.

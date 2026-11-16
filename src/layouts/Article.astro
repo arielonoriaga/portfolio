@@ -103,6 +103,69 @@ const nice = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', { year: '
   .prose table { border-collapse: collapse; width: 100%; margin: 0 0 1.4rem; font-size: 1rem; }
   .prose th, .prose td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 2px solid var(--ink); vertical-align: top; }
   .prose th { font-family: var(--pixel); font-weight: 500; }
+
+  /* ── Diagrams: readable as a still, animated only when motion is welcome ── */
+  .diagram { margin: 2rem 0 2.2rem; padding: 1rem 1rem 0.9rem; border: 3px solid var(--ink); background: #fff; box-shadow: 5px 5px 0 var(--ink); }
+  .diagram svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .diagram figcaption { margin-top: 0.8rem; padding-top: 0.7rem; border-top: 2px solid var(--deep); font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); }
+  .diagram text { font-family: var(--pixel); font-size: 14px; fill: var(--ink); text-anchor: middle; }
+  .diagram .lane { font-family: var(--display); font-weight: 800; font-size: 14px; }
+  .diagram .life { stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 4 5; opacity: 0.6; }
+  .diagram .msg path, .diagram .wire { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
+  .diagram .msg.bad path { stroke: oklch(55% 0.2 28); } .diagram .msg.bad text { fill: oklch(48% 0.19 28); }
+  .diagram .msg.good path { stroke: oklch(52% 0.14 152); } .diagram .msg.good text { fill: oklch(42% 0.13 152); }
+  .diagram .run { fill: var(--gold); stroke: var(--ink); stroke-width: 2; }
+  .diagram .note { text-anchor: start; fill: var(--ink-soft); font-size: 13px; }
+  .diagram .box rect { fill: var(--deep); stroke: var(--ink); stroke-width: 3; }
+  .diagram .box text { font-family: var(--display); font-weight: 700; font-size: 14px; }
+  .diagram .box .sub, .diagram .sub { font-family: var(--pixel); font-weight: 500; font-size: 12.5px; fill: var(--ink-soft); }
+  .diagram .new rect { fill: oklch(92% 0.07 152); } .diagram .db rect { fill: var(--gold); }
+  .diagram .old { opacity: 0.35; } .diagram .old rect { stroke-dasharray: 6 5; }
+  .diagram .oldwire { opacity: 0.25; stroke-dasharray: 6 6; } .diagram .newwire { stroke: var(--blue); stroke-width: 3.5; }
+  .diagram .thin { stroke-width: 1.5; stroke: var(--ink-soft); } .diagram .ok { stroke: oklch(52% 0.14 152); }
+  .diagram .cap { text-anchor: start; font-size: 16px; fill: var(--blue-deep); }
+  .diagram .c1, .diagram .c2, .diagram .c3 { display: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .diagram .msg path, .diagram .newwire, .diagram .ok { stroke-dasharray: 1; }
+    .diagram .c1, .diagram .c2, .diagram .c3 { display: inline; }
+  @keyframes d1s1 { 0%, 4.0% { opacity: 0; stroke-dashoffset: 1; } 9.0%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s1, .diagram .s1 path { animation: d1s1 16s ease-out infinite both; }
+  @keyframes d1s2 { 0%, 14.6% { opacity: 0; stroke-dashoffset: 1; } 19.6%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s2, .diagram .s2 path { animation: d1s2 16s ease-out infinite both; }
+  @keyframes d1s3 { 0%, 25.1% { opacity: 0; stroke-dashoffset: 1; } 30.1%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s3, .diagram .s3 path { animation: d1s3 16s ease-out infinite both; }
+  @keyframes d1s4 { 0%, 35.7% { opacity: 0; stroke-dashoffset: 1; } 40.7%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s4, .diagram .s4 path { animation: d1s4 16s ease-out infinite both; }
+  @keyframes d1s5 { 0%, 46.3% { opacity: 0; stroke-dashoffset: 1; } 51.3%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s5, .diagram .s5 path { animation: d1s5 16s ease-out infinite both; }
+  @keyframes d1s6 { 0%, 56.9% { opacity: 0; stroke-dashoffset: 1; } 61.9%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s6, .diagram .s6 path { animation: d1s6 16s ease-out infinite both; }
+  @keyframes d1s7 { 0%, 67.4% { opacity: 0; stroke-dashoffset: 1; } 72.4%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s7, .diagram .s7 path { animation: d1s7 16s ease-out infinite both; }
+  @keyframes d1s8 { 0%, 78.0% { opacity: 0; stroke-dashoffset: 1; } 83.0%, 95% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+    .diagram .s8, .diagram .s8 path { animation: d1s8 16s ease-out infinite both; }
+    .diagram .new { animation: d2new 18s ease-out infinite both; }
+    .diagram .dbnew { animation: d2new 18s ease-out infinite both; }
+    .diagram .verify, .diagram .ok { animation: d2verify 18s ease-out infinite both; }
+    .diagram .newwire { animation: d2newwire 18s ease-out infinite both; }
+    .diagram .oldwire { animation: d2oldwire 18s ease-out infinite both; stroke-dasharray: none; }
+    .diagram .old { animation: d2old 18s ease-out infinite both; }
+    .diagram .old rect { animation: d2oldrect 18s steps(1) infinite both; }
+    .diagram .retired { animation: d2retired 18s ease-out infinite both; }
+    .diagram .c1 { animation: d2c1 18s steps(1) infinite both; } .diagram .c2 { animation: d2c2 18s steps(1) infinite both; }
+    .diagram .c3 { animation: d2c3 18s steps(1) infinite both; } .diagram .c4 { animation: d2c4 18s steps(1) infinite both; }
+  }
+  @keyframes d2new { 0%, 6% { opacity: 0; } 12%, 96% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes d2verify { 0%, 26% { opacity: 0; stroke-dashoffset: 1; } 33%, 96% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+  @keyframes d2newwire { 0%, 50% { opacity: 0; stroke-dashoffset: 1; } 58%, 96% { opacity: 1; stroke-dashoffset: 0; } 100% { opacity: 0; stroke-dashoffset: 1; } }
+  @keyframes d2oldwire { 0%, 50% { opacity: 1; stroke: var(--blue); stroke-width: 3.5; } 58%, 100% { opacity: 0.2; stroke: var(--ink); stroke-width: 2.5; } }
+  @keyframes d2old { 0%, 74% { opacity: 1; } 82%, 100% { opacity: 0.3; } }
+  @keyframes d2oldrect { 0%, 74% { stroke-dasharray: none; } 75%, 100% { stroke-dasharray: 6 5; } }
+  @keyframes d2retired { 0%, 76% { opacity: 0; } 82%, 100% { opacity: 1; } }
+  @keyframes d2c1 { 0%, 24.9% { opacity: 1; } 25%, 100% { opacity: 0; } }
+  @keyframes d2c2 { 0%, 24.9% { opacity: 0; } 25%, 49.9% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes d2c3 { 0%, 49.9% { opacity: 0; } 50%, 73.9% { opacity: 1; } 74%, 100% { opacity: 0; } }
+  @keyframes d2c4 { 0%, 73.9% { opacity: 0; } 74%, 100% { opacity: 1; } }
   .hire { max-width: 44rem; margin-top: 3.5rem; background: var(--ink); color: var(--void); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 8px 8px 0 var(--blue); }
   .hire h2 { font-family: var(--display); font-weight: 800; font-size: 1.6rem; margin: 0 0 0.6rem; }
   .hire p { margin: 0 0 1rem; }

@@ -64,6 +64,32 @@ Every service followed the same four steps:
 3. **Repoint callers.** Reverse-proxy routes, secrets, webhook endpoint rows, scheduled jobs.
 4. **Retire only the old API and worker containers.** Every database container stays.
 
+<figure class="diagram">
+<svg viewBox="0 0 720 320" role="img" aria-labelledby="d2t d2d">
+<title id="d2t">The four-step cutover</title>
+<desc id="d2d">Callers reach the old service through a reverse proxy. Step one: the new module is deployed alongside. Step two: it is verified directly. Step three: the proxy and callers are repointed to the new module. Step four: the old service is retired. The database stays where it is throughout.</desc>
+<defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="context-stroke"/></marker></defs>
+<g class="box"><rect x="24" y="118" width="128" height="58"/><text x="88" y="152">Callers</text></g>
+<g class="box"><rect x="240" y="118" width="140" height="58"/><text x="310" y="152">Reverse proxy</text></g>
+<path class="wire" d="M152 147 H238" marker-end="url(#ah2)"/>
+<g class="box old"><rect x="486" y="34" width="150" height="58"/><text x="561" y="60">Old service</text><text class="sub retired" x="561" y="79">retired</text></g>
+<g class="box new"><rect x="486" y="202" width="150" height="58"/><text x="561" y="228">New module</text><text class="sub" x="561" y="247">in the one binary</text></g>
+<g class="box db"><rect x="656" y="118" width="52" height="58" rx="8"/><text x="682" y="152">DB</text></g>
+<path class="wire thin" d="M636 63 H682 V116"/><path class="wire thin dbnew" d="M636 231 H682 V178"/>
+<path class="wire oldwire" pathLength="1" d="M380 138 C430 138 440 63 484 63" marker-end="url(#ah2)"/>
+<path class="wire newwire" pathLength="1" d="M380 158 C430 158 440 231 484 231" marker-end="url(#ah2)"/>
+<g class="verify"><path class="wire ok" pathLength="1" d="M561 300 V264" marker-end="url(#ah2)"/><text class="sub" x="561" y="314">direct checks</text></g>
+<g class="caps">
+<text class="cap c1" x="24" y="34">1 · Deploy alongside</text>
+<text class="cap c2" x="24" y="34">2 · Verify directly</text>
+<text class="cap c3" x="24" y="34">3 · Repoint callers</text>
+<text class="cap c4" x="24" y="34">4 · Retire the old service</text>
+</g>
+<text class="sub stay" x="682" y="196">stays</text>
+</svg>
+<figcaption>The same four steps for every service: deploy alongside, verify directly, repoint callers, retire the old containers. The database never moves.</figcaption>
+</figure>
+
 There were no feature flags and no DNS changes. The switch was the reverse proxy and each caller's configuration.
 
 The order was chosen by risk, not by importance:
