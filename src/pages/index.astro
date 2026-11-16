@@ -5,138 +5,46 @@
 // Look: an ink-drawn game world on Huggian's palette and type. Structures borrowed from
 // games in general (HUD, achievements, quest log, crafting grid, inventory), all original
 // art. Motion is CSS/SVG only, no JavaScript, and switches off under prefers-reduced-motion.
-const email = 'onoriagaariel@gmail.com';
+import {
+  email, mailto, site, person, description, offers, faq, achievements, mainQuest, crafting, sideQuests,
+  experience, openSource, hotbar, skills,
+} from '../data/profile';
 
-const achievements = [
-  { icon: 'flag', title: 'Solo run', text: 'Founded, built and operate a production SaaS alone.' },
-  { icon: 'shield', title: 'Passed the audit', text: 'Shipped gaming products that passed GLI certification.' },
-  { icon: 'crate', title: 'Seven crates', text: 'Published a seven-crate Rust workspace on crates.io.' },
-  { icon: 'star', title: 'Fast climb', text: 'Trainee to lead of a seven-person team in under two years.' },
-];
-
-const mainQuest = {
-  title: 'Ez-Stock',
-  kind: 'Main quest · multi-tenant commerce SaaS · founder, sole engineer',
-  summary: 'Stock, point-of-sale and electronic invoicing for small and mid-size retailers. In production.',
-  points: [
-    'Rust backend (Axum, SQLx, Tokio) on PostgreSQL, organised as about 40 bounded contexts with 440+ migrations.',
-    'Offline-capable POS that syncs when the connection returns.',
-    'Transactional outbox with idempotency keys, payment-provider integration and government tax invoicing.',
-    'Property-based and mutation testing; rollouts follow runbooks with precheck and rollback SQL.',
+const title = `${person.name} — Senior Rust engineer for payments, billing and commerce backends`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ProfilePage',
+      '@id': `${site}/#page`,
+      url: `${site}/`,
+      name: title,
+      description,
+      mainEntity: { '@id': `${site}/#ariel` },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${site}/#ariel`,
+      name: person.name,
+      url: `${site}/`,
+      image: `${site}/og.png`,
+      jobTitle: 'Senior Software Engineer',
+      description,
+      email: `mailto:${email}`,
+      address: { '@type': 'PostalAddress', addressCountry: 'AR' },
+      worksFor: { '@type': 'Organization', name: 'Huggian', url: 'https://landing.huggian.com' },
+      knowsAbout: ['Rust', 'TypeScript', 'Go', 'PostgreSQL', 'Payment systems', 'Billing systems', 'E-commerce backends', 'AWS', 'Terraform', 'Domain-driven design'],
+      sameAs: [person.github, person.linkedin, person.crates],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${site}/#faq`,
+      mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
   ],
-  stack: ['Rust', 'Axum', 'PostgreSQL', 'SolidJS', 'TypeScript'],
-  link: { href: 'https://ez-stock.huggian.com', label: 'ez-stock.huggian.com' },
 };
-
-const crafting = {
-  title: 'Four services into one',
-  kind: 'Crafting · service consolidation in Rust',
-  summary:
-    'Replaced four separately deployed services with a single Rust API and worker, migrated live in phases with each old service retired in turn.',
-  inputs: ['images', 'catalog', 'recs', 'AI'],
-  output: 'one Rust API + worker',
-  points: [
-    'Scoped API keys with quotas and usage-based billing.',
-    'A telemetry ingestion platform built as six crates.',
-    'Documented performance baseline before and after.',
-  ],
-  stack: ['Rust', 'PostgreSQL', 'Redis'],
-};
-
-const sideQuests = [
-  {
-    title: 'Billing, fiscal and identity platform',
-    kind: 'Side quest · platform core in TypeScript',
-    summary:
-      'The shared platform behind the products: subscriptions, payment processing, fiscal invoicing, identity, event delivery and an admin console.',
-    points: ['27 bounded contexts, tested against a real PostgreSQL instance.', 'Tag-triggered CI builds and deploys.'],
-    stack: ['TypeScript', 'Bun', 'Hono', 'Drizzle', 'PostgreSQL'],
-  },
-  {
-    title: 'Production infrastructure, run solo',
-    kind: 'Side quest · deploys, rollback and operations',
-    summary: 'Everything above runs on infrastructure I built and operate alone.',
-    points: [
-      'CI deploy, rollback and scheduled deploys, with health-gated rollouts and a deploy-window guard.',
-      'Scale-to-zero for idle services, self-hosted secrets management and monitoring.',
-    ],
-    stack: ['Docker', 'nginx', 'GitHub Actions', 'systemd'],
-  },
-];
-
-const experience = [
-  {
-    role: 'Core engineer, real-money gaming platform',
-    when: 'Aug 2024 – present',
-    status: 'Active',
-    points: [
-      'Core engineer on a multi-tenant gaming platform (remote game server and back office): a Go and TypeScript monorepo on AWS serverless. About 3,700 commits, roughly 38% of the codebase.',
-      'Designed and maintain five shared TypeScript libraries and a game template that the studio’s game teams build on.',
-      'Terraform across Lambda, API Gateway, DynamoDB, Aurora, ECS, CloudFront and IoT Core, plus the GitHub Actions pipelines.',
-      'Co-developed RNG and game-math services with Monte Carlo simulation tooling. The products passed GLI certification.',
-      'Wrote the team’s internal tooling: a Rust terminal UI for multi-environment deploy status and a Go service for game scaffolding.',
-    ],
-  },
-  {
-    role: 'Founder and engineer, Huggian',
-    when: 'Alongside',
-    status: 'Active',
-    points: ['Built and run the commerce, billing and infrastructure products described above, end to end.'],
-  },
-  {
-    role: 'Trainee to team lead, PicallEx',
-    when: 'Earlier',
-    status: 'Completed',
-    points: ['Joined as a trainee and was leading a team of seven engineers in under two years.'],
-  },
-  {
-    role: 'Freelance engineer',
-    when: 'Earlier',
-    status: 'Completed',
-    points: [
-      'Independent client projects, including a WordPress-to-static migration that cut a client’s hosting cost by 90% and raised Lighthouse from 52 to 98.',
-    ],
-  },
-];
-
-const openSource = [
-  {
-    name: 'lazyfetch',
-    href: 'https://github.com/arielonoriaga/lazyfetch',
-    what: 'Terminal HTTP client: collections, environments, Postman import, vim keys. Published on crates.io as a seven-crate hexagonal workspace with an IO-free core enforced in CI.',
-    lang: 'Rust',
-  },
-  {
-    name: 'entropy-hunter',
-    href: 'https://github.com/arielonoriaga/entropy-hunter',
-    what: 'Deterministic code-health analyzer for Rust and TypeScript: complexity, coupling, churn and duplication, with a regression gate for CI.',
-    lang: 'TypeScript',
-  },
-  {
-    name: 'claude-harness',
-    href: 'https://github.com/arielonoriaga/claude-harness',
-    what: 'Safety and self-improvement harness for AI coding agents: a guardrail hook, shared journal, test agent and review queue.',
-    lang: 'Rust · Shell',
-  },
-  {
-    name: 'lazywifi',
-    href: 'https://github.com/arielonoriaga/lazywifi',
-    what: 'Terminal UI for NetworkManager: wifi, ethernet, VPN and QR sharing.',
-    lang: 'Rust',
-  },
-];
-
-const hotbar = ['Rust', 'TypeScript', 'Go', 'SQL', 'Python', 'Postgres', 'AWS', 'Terraform', 'Docker'];
-
-const skills = [
-  ['Backend', 'Axum, SQLx, Tokio, Hono, Drizzle · PostgreSQL, DynamoDB, Redis · GraphQL, MQTT, queues, outbox and idempotency patterns'],
-  ['Frontend', 'SolidJS, Svelte, Vue, Astro · Phaser, PixiJS · PWA and offline sync'],
-  ['Cloud and ops', 'AWS (Lambda, API Gateway, DynamoDB, Aurora, ECS, CloudFront, IoT Core, SQS/SNS) · Terraform · Docker · GitHub Actions'],
-  ['Practices', 'Domain-driven and hexagonal design · property and mutation testing · AI-agent workflows with review gates'],
-];
-
-const description =
-  'Ariel Onoriaga — senior Rust and TypeScript engineer. Backend, payments and commerce systems. Available for contract work with US teams.';
+// Visit counter (GoatCounter pixel, no JavaScript). Empty = off.
+const goatcounter = '';
 ---
 
 <!doctype html>
@@ -144,12 +52,24 @@ const description =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ariel Onoriaga — Senior Rust / TypeScript engineer</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content="Ariel Onoriaga — Senior Rust / TypeScript engineer" />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://arielonoriaga.huggian.com/" />
+    <meta property="og:url" content={`${site}/`} />
+    <meta property="og:image" content={`${site}/og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Ariel Onoriaga" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${site}/og.png`} />
+    <meta name="author" content="Ariel Onoriaga" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Plain-text summary for AI assistants" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="canonical" href="https://arielonoriaga.huggian.com/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#dcecf9" />
@@ -195,20 +115,18 @@ const description =
 
       <div class="stagewrap" id="top">
         <div class="intro">
-          <p class="eyebrow">Player one · senior Rust &amp; TypeScript engineer</p>
+          <p class="eyebrow">Player one</p>
           <h1><span>Ariel</span> <span>Onoriaga</span></h1>
-          <p class="lede">
-            I build and run the systems where mistakes cost money: payments, billing, commerce,
-            and the infrastructure under them.
-          </p>
+          <p class="lede">{person.role}.</p>
           <p class="proof">
-            Seven years in. One production SaaS built and operated alone, and gaming products that
-            passed certification.
+            I build and run the systems where mistakes cost money. Seven years in, with one
+            production SaaS built and operated alone and gaming products that passed certification.
           </p>
           <nav class="cta" aria-label="Contact">
-            <a class="btn primary" href={`mailto:${email}`}>Email me</a>
+            <a class="btn primary" href={mailto}>Email me</a>
             <a class="btn" href="https://www.linkedin.com/in/arielonoriaga/">LinkedIn</a>
             <a class="btn" href="https://github.com/arielonoriaga">GitHub</a>
+            <a class="btn" href="/ariel-onoriaga-cv.pdf">CV (PDF)</a>
           </nav>
         </div>
 
@@ -262,7 +180,8 @@ const description =
 
     <main>
       <section class="achievements" aria-label="Achievements">
-        <h2 class="tag">Achievements unlocked</h2>
+        <p class="tag" aria-hidden="true">Achievements unlocked</p>
+        <h2 class="h">Highlights</h2>
         <ul>
           {achievements.map((a) => (
             <li>
@@ -273,8 +192,23 @@ const description =
         </ul>
       </section>
 
+      <section id="services">
+        <p class="tag" aria-hidden="true">Party role</p>
+        <h2 class="h">What I can take off your plate</h2>
+        <ol class="offers">
+          {offers.map((o) => (
+            <li>
+              <h3>{o.title}</h3>
+              <p>{o.text}</p>
+              <p class="done">{o.proof}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
       <section id="about" class="about">
-        <h2 class="tag">How I play</h2>
+        <p class="tag" aria-hidden="true">How I play</p>
+        <h2 class="h">How I work</h2>
         <p class="big">
           I’m most useful where correctness matters and one person has to hold the whole picture:
           <mark>money movement</mark>, multi-tenant data, integrations with systems that don’t
@@ -287,7 +221,8 @@ const description =
       </section>
 
       <section id="work">
-        <h2 class="tag">Quest log</h2>
+        <p class="tag" aria-hidden="true">Quest log</p>
+        <h2 class="h">Selected work</h2>
 
         <article class="quest main">
           <div>
@@ -329,7 +264,8 @@ const description =
       </section>
 
       <section id="experience">
-        <h2 class="tag">Campaign history</h2>
+        <p class="tag" aria-hidden="true">Campaign history</p>
+        <h2 class="h">Experience</h2>
         <ol class="campaign">
           {experience.map((e) => (
             <li>
@@ -347,7 +283,8 @@ const description =
       </section>
 
       <section id="open-source">
-        <h2 class="tag">Open-source drops</h2>
+        <p class="tag" aria-hidden="true">Open-source drops</p>
+        <h2 class="h">Open source</h2>
         <p class="note">Most of my product code is private. These are the projects you can read.</p>
         <ul class="oss">
           {openSource.map((o) => (
@@ -361,7 +298,8 @@ const description =
       </section>
 
       <section id="skills">
-        <h2 class="tag">Inventory</h2>
+        <p class="tag" aria-hidden="true">Inventory</p>
+        <h2 class="h">Skills</h2>
         <ul class="hotbar" aria-label="Core tools">
           {hotbar.map((h, i) => <li><small>{i + 1}</small>{h}</li>)}
         </ul>
@@ -375,6 +313,19 @@ const description =
         </dl>
       </section>
 
+      <section id="faq">
+        <p class="tag" aria-hidden="true">Tutorial</p>
+        <h2 class="h">Questions people ask first</h2>
+        <div class="faq">
+          {faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <section id="contact" class="coop">
         <div>
           <p class="tag">Player two wanted</p>
@@ -384,19 +335,22 @@ const description =
             two days with a yes, a no, or a time for a 20-minute call.
           </p>
           <p class="cta">
-            <a class="btn primary" href={`mailto:${email}`}>{email}</a>
+            <a class="btn primary" href={mailto}>{email}</a>
             <a class="btn" href="https://www.linkedin.com/in/arielonoriaga/">LinkedIn</a>
+            <a class="btn" href="/ariel-onoriaga-cv.pdf">CV (PDF)</a>
           </p>
         </div>
       </section>
     </main>
 
+    {goatcounter && <img class="count" src={`https://${goatcounter}.goatcounter.com/count?p=/`} alt="" width="1" height="1" />}
     <footer>
       <p>
         © {new Date().getFullYear()} Ariel Onoriaga ·
         <a href="https://github.com/arielonoriaga">GitHub</a> ·
         <a href="https://www.linkedin.com/in/arielonoriaga/">LinkedIn</a> ·
-        <a href="https://crates.io/users/arielonoriaga">crates.io</a>
+        <a href="https://crates.io/users/arielonoriaga">crates.io</a> ·
+        <a href="/cv/">CV</a>
       </p>
     </footer>
   </body>
@@ -533,7 +487,25 @@ const description =
   main, footer { max-width: 70rem; margin: 0 auto; padding: 0 1.25rem; }
   section { padding: clamp(2.75rem, 6vw, 4.5rem) 0 0; }
   .tag { display: inline-block; font-size: 1rem; line-height: 1; color: var(--void); background: var(--ink); padding: 0.4rem 0.7rem 0.35rem; margin: 0 0 1.5rem; }
+  .tag { margin-bottom: 0.7rem; }
+  .h { font-family: var(--display); font-weight: 800; font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -0.02em; margin-bottom: 1.5rem; }
   h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.015em; }
+  .offers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 2.25rem; counter-reset: offer; }
+  .offers li { margin: 0; padding-top: 1rem; border-top: 6px solid var(--ink); counter-increment: offer; }
+  .offers li:nth-child(1) { border-color: var(--orange); } .offers li:nth-child(2) { border-color: var(--blue); } .offers li:nth-child(3) { border-color: var(--teal); }
+  .offers h3 { font-size: 1.4rem; margin-bottom: 0.6rem; }
+  .offers h3::before { content: '0' counter(offer) ' '; font-family: var(--pixel); font-weight: 500; font-size: 0.95rem; color: var(--ink-soft); display: block; margin-bottom: 0.35rem; letter-spacing: 0.04em; }
+  .offers p { color: var(--ink-soft); }
+  .offers .done { font-family: var(--pixel); font-size: 0.95rem; color: var(--blue-deep); }
+  .faq { max-width: 48rem; border-top: 3px solid var(--ink); }
+  .faq details { border-bottom: 3px solid var(--ink); }
+  .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; padding: 0.95rem 0; font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; font-family: var(--pixel); font-size: 1.4rem; line-height: 1; color: var(--blue); }
+  .faq details[open] summary::after { content: '–'; }
+  .faq summary:hover { color: var(--blue-deep); }
+  .faq details p { color: var(--ink-soft); max-width: 42rem; margin: 0 0 1.1rem; }
+  .count { position: absolute; width: 1px; height: 1px; opacity: 0; }
   .kind, .when, .lang { font-size: 0.95rem; color: var(--blue-deep); }
 
   .achievements ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
@@ -593,7 +565,7 @@ const description =
 
   .coop { margin: clamp(3rem, 7vw, 5rem) 0 3rem; padding: 0; }
   .coop > div { background: var(--ink); color: var(--void); padding: clamp(2rem, 6vw, 4rem); box-shadow: 8px 8px 0 var(--blue); }
-  .coop .tag { background: var(--gold); color: var(--ink); }
+  .coop .tag { background: var(--gold); color: var(--ink); margin-bottom: 1.2rem; }
   .coop h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.6vw, 3.2rem); letter-spacing: -0.02em; max-width: 36rem; margin-bottom: 1rem; }
   .coop p { max-width: 36rem; }
   .coop .btn { border-color: var(--void); box-shadow: 4px 4px 0 var(--gold); }
@@ -688,6 +660,7 @@ const description =
     .walker { width: clamp(11rem, 44vw, 15rem); }
     @keyframes walk { 0% { left: 0; } 38%, 50% { left: calc(100% - clamp(11rem, 44vw, 15rem)); } 88%, 100% { left: 0; } }
     .quest.main, .quest.craft, .sides { grid-template-columns: 1fr; }
+    .offers { grid-template-columns: 1fr; gap: 1.5rem; }
     .quest.craft { margin-left: 0; }
     .quest.side:last-child { margin-top: 0; }
   }
