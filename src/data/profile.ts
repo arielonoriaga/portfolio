@@ -25,16 +25,16 @@ export const mainQuest = {
 };
 
 export const crafting = {
-  title: 'Four services into one',
+  title: 'Three services into one binary',
   kind: 'Crafting · service consolidation in Rust',
   summary:
-    'Replaced four separately deployed services with a single Rust API and worker, migrated live in phases with each old service retired in turn.',
-  inputs: ['images', 'catalog', 'recs', 'AI'],
+    'Merged three separately deployed services into a single Rust API and worker, cut over live one at a time with each old service retired in turn, then added a fourth module in the same binary.',
+  inputs: ['images', 'catalog', 'recs', '+ AI (new)'],
   output: 'one Rust API + worker',
   points: [
-    'Scoped API keys with quotas and usage-based billing.',
+    'Scoped API keys with plans, rate limits and monthly quotas; existing keys migrated without reissuing any.',
     'A telemetry ingestion platform built as six crates.',
-    'Documented performance baseline before and after.',
+    'A cutover gate that refuses to switch traffic if any key would end up with tighter limits than before.',
   ],
   stack: ['Rust', 'PostgreSQL', 'Redis'],
 };
@@ -160,13 +160,13 @@ export const offers = [
   },
   {
     title: 'Billing and subscriptions',
-    text: 'Plans, usage-based billing, quotas, invoicing and the tax or fiscal integration behind them.',
+    text: 'Plans, subscriptions, quotas, invoicing and the tax or fiscal integration behind them.',
     proof: 'Done in the platform behind my own products.',
   },
   {
     title: 'Fewer services, in Rust',
-    text: 'Consolidating or migrating backend services to Rust while they stay live: phased cutover, a measured baseline before and after, old services retired one at a time.',
-    proof: 'Done: four services into one.',
+    text: 'Consolidating backend services into one Rust codebase while they stay live: phased cutover, a verification gate before traffic moves, old services retired one at a time.',
+    proof: 'Done: three services into one binary.',
   },
 ];
 
