@@ -83,14 +83,17 @@ export const experience = [
     role: 'Trainee to team lead, PicallEx',
     when: 'Jun 2020 – Jan 2022',
     status: 'Completed',
-    points: ['Joined as a trainee and was leading a team of seven engineers in under two years.'],
+    points: [
+      'Joined as a trainee and was leading a team of seven engineers in under two years.',
+      'Vue, PHP (Laravel) and SQL; introduced TypeScript and Vitest where the team used plain JavaScript.',
+    ],
   },
   {
     role: 'Freelance engineer',
     when: 'Earlier',
     status: 'Completed',
     points: [
-      'Independent client projects, including a WordPress-to-static migration that cut a client’s hosting cost by 90% and raised Lighthouse from 52 to 98.',
+      'Independent client projects, including a WordPress-to-static migration that cut hosting cost by 90% and raised Lighthouse from 52 to 98.',
     ],
   },
 ];
@@ -125,9 +128,9 @@ export const openSource = [
 export const hotbar = ['Rust', 'TypeScript', 'Go', 'SQL', 'Python', 'Postgres', 'AWS', 'Terraform', 'Docker'];
 
 export const skills = [
-  ['Backend', 'Axum, SQLx, Tokio, Hono, Drizzle · PostgreSQL, DynamoDB, Redis · GraphQL, MQTT, queues, outbox and idempotency patterns'],
+  ['Backend', 'Axum, SQLx, Tokio, Hono, Drizzle · PostgreSQL, DynamoDB, Redis · GraphQL, MQTT, queues, outbox, idempotency'],
   ['Frontend', 'SolidJS, Svelte, Vue, Astro · Phaser, PixiJS · PWA and offline sync'],
-  ['Cloud and ops', 'AWS (Lambda, API Gateway, DynamoDB, Aurora, ECS, CloudFront, IoT Core, SQS/SNS) · Terraform · Docker · GitHub Actions'],
+  ['Cloud and ops', 'AWS (Lambda, API Gateway, DynamoDB, Aurora, ECS, CloudFront, IoT Core, SQS/SNS) · Terraform · GitHub Actions'],
   ['Practices', 'Domain-driven and hexagonal design · property and mutation testing · AI-agent workflows with review gates'],
 ];
 
