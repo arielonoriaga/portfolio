@@ -75,9 +75,9 @@ export const experience = [
   },
   {
     role: 'Founder and engineer, Huggian',
-    when: 'Alongside',
+    when: 'Feb 2026 – present',
     status: 'Active',
-    points: ['Built and run the commerce, billing and infrastructure products described above, end to end.'],
+    points: ['Built and run Ez-Stock and its billing, fiscal and identity platform end to end (Rust, TypeScript, PostgreSQL).'],
   },
   {
     role: 'Trainee to team lead, PicallEx',
