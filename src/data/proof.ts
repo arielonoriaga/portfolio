@@ -16,7 +16,7 @@ export const contributions = {
 };
 
 /** Ez-Stock release history. Source: git tags and migrations in the ez-commerce repo. */
-export const ezStock = { since: '2026-03-30', releases: 869, migrations: 464, commits60d: 1828 };
+export const ezCommerce = { since: '2026-03-30', releases: 869, migrations: 464, commits60d: 1828 };
 
 /** When the shops using Ez-Stock sell: per-mille of sales by weekday (Mon..Sun) and hour (08..23).
  *  Source: anonymous aggregate over production sales, 60 days to 2026-11-16 (62,647 sales, 14 shops). */

@@ -11,7 +11,7 @@ export const achievements = [
 ];
 
 export const mainQuest = {
-  title: 'Ez-Stock',
+  title: 'Ez-Commerce',
   kind: 'Main quest · multi-tenant commerce SaaS · founder, sole engineer',
   summary: 'Stock, point-of-sale and electronic invoicing for small and mid-size retailers. In production.',
   points: [
@@ -21,7 +21,7 @@ export const mainQuest = {
     'Property-based and mutation testing; rollouts follow runbooks with precheck and rollback SQL.',
   ],
   stack: ['Rust', 'Axum', 'PostgreSQL', 'SolidJS', 'TypeScript'],
-  link: { href: 'https://ez-stock.huggian.com', label: 'ez-stock.huggian.com' },
+  link: { href: 'https://ez-commerce.huggian.com', label: 'ez-commerce.huggian.com' },
 };
 
 export const crafting = {
@@ -77,7 +77,7 @@ export const experience = [
     role: 'Founder and engineer, Huggian',
     when: 'Feb 2026 – present',
     status: 'Active',
-    points: ['Built and run Ez-Stock and its billing, fiscal and identity platform end to end (Rust, TypeScript, PostgreSQL).'],
+    points: ['Built and run Ez-Commerce and its billing, fiscal and identity platform end to end (Rust, TypeScript, PostgreSQL).'],
   },
   {
     role: 'Trainee to team lead, PicallEx',
@@ -156,7 +156,7 @@ export const offers = [
   {
     title: 'Payments that survive retries',
     text: 'Payment-provider integrations built so a timeout, a duplicate webhook or a retry never charges twice or loses an order: idempotency keys, guarded state transitions and a transactional outbox for the events that follow.',
-    proof: 'Done in Ez-Stock, in production.',
+    proof: 'Done in Ez-Commerce, in production.',
   },
   {
     title: 'Billing and subscriptions',
@@ -189,7 +189,7 @@ export const faq = [
   },
   {
     q: 'Most of his code is private. What can I look at?',
-    a: 'Four open-source projects, including lazyfetch, a seven-crate Rust workspace published on crates.io. Ez-Stock is live in production, and he can walk through its architecture on a call.',
+    a: 'Four open-source projects, including lazyfetch, a seven-crate Rust workspace published on crates.io. Ez-Commerce is live in production, and he can walk through its architecture on a call.',
   },
   {
     q: 'Has he worked in regulated environments?',

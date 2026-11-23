@@ -7,7 +7,7 @@ date: '2026-11-16'
 
 Everything in a payment flow retries. The point-of-sale app retries when the network drops. The payment platform redelivers an event until it gets a 200. A background worker picks a job up again after a crash. Each retry is correct behaviour on its own, and each one is a chance to charge someone twice or lose an order.
 
-Ez-Stock is the commerce backend I build and run: Rust with Axum and SQLx on PostgreSQL. This is how it stays correct under retries. There are three mechanisms, and each covers a different failure. I'll also show where they still leak, because the gaps taught me more than the parts that work.
+Ez-Commerce is the commerce backend I build and run: Rust with Axum and SQLx on PostgreSQL. This is how it stays correct under retries. There are three mechanisms, and each covers a different failure. I'll also show where they still leak, because the gaps taught me more than the parts that work.
 
 ## 1. Idempotency keys for requests
 

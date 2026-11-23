@@ -1,6 +1,6 @@
 ---
 // "Stats screen": the shipping record as real charts. All figures come from src/data/proof.ts.
-import { contributions, ezStock, shopRhythm } from '../data/proof';
+import { contributions, ezCommerce, shopRhythm } from '../data/proof';
 
 const nf = new Intl.NumberFormat('en-US');
 const CELL = 11;
@@ -52,17 +52,17 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   <div class="duo">
     <figure class="panel nums">
-      <p class="kind">Ez-Stock in production, since March 2026</p>
+      <p class="kind">Ez-Commerce in production, since March 2026</p>
       <dl>
-        <div><dt>Releases</dt><dd>{nf.format(ezStock.releases)}</dd></div>
-        <div><dt>Database migrations</dt><dd>{nf.format(ezStock.migrations)}</dd></div>
-        <div><dt>Commits, last 60 days</dt><dd>{nf.format(ezStock.commits60d)}</dd></div>
+        <div><dt>Releases</dt><dd>{nf.format(ezCommerce.releases)}</dd></div>
+        <div><dt>Database migrations</dt><dd>{nf.format(ezCommerce.migrations)}</dd></div>
+        <div><dt>Commits, last 60 days</dt><dd>{nf.format(ezCommerce.commits60d)}</dd></div>
       </dl>
       <figcaption>Small, frequent releases are how one engineer keeps a live product safe to change.</figcaption>
     </figure>
 
     <figure class="panel rhythm">
-      <p class="kind">When the shops on Ez-Stock sell</p>
+      <p class="kind">When the shops on Ez-Commerce sell</p>
       <div class="hgrid" role="img"
         aria-label={`Heat map of ${nf.format(shopRhythm.sales)} sales by weekday and hour: busiest from 7 to 10 pm, especially Friday and Saturday.`}>
         {heat.map((row, d) => (
