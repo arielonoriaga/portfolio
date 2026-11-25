@@ -23,7 +23,7 @@ const MONTH_LABELS = weeks.flatMap((_, x) => {
     : [];
 });
 
-const heat = shopRhythm.heat;
+const heat = shopRhythm.perMilleByIsoWeekdayFrom8To23h;
 const heatMax = Math.max(...heat.flat());
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const benchMax = Math.max(...workspaceSplitBench.scenarios.map((s) => s.beforeSec));
