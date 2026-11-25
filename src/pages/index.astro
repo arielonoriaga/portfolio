@@ -6,7 +6,7 @@
 // games in general (HUD, achievements, quest log, crafting grid, inventory), all original
 // art. Motion is CSS/SVG only, no JavaScript, and switches off under prefers-reduced-motion.
 import {
-  email, mailto, site, person, description, offers, faq, achievements, mainQuest, crafting, sideQuests,
+  email, mailto, site, person, description, offers, faq, achievements, huggianModules, mainQuest, workspaceSplit, crafting, sideQuests,
   experience, openSource, hotbar, skills,
 } from '../data/profile';
 import { posts } from '../data/writing';
@@ -34,7 +34,7 @@ const jsonLd = {
       description,
       email: `mailto:${email}`,
       address: { '@type': 'PostalAddress', addressCountry: 'AR' },
-      worksFor: { '@type': 'Organization', name: 'Huggian', url: 'https://landing.huggian.com' },
+      worksFor: { '@type': 'Organization', name: 'Huggian', url: 'https://huggian.com' },
       knowsAbout: ['Rust', 'TypeScript', 'Go', 'PostgreSQL', 'Payment systems', 'Billing systems', 'E-commerce backends', 'AWS', 'Terraform', 'Domain-driven design'],
       sameAs: [person.github, person.linkedin, person.crates],
     },
@@ -74,8 +74,9 @@ const goatcounter = '';
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="canonical" href="https://arielonoriaga.huggian.com/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#dcecf9" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#dcecf9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e1624" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -100,12 +101,19 @@ const goatcounter = '';
           <svg viewBox="0 0 64 64" aria-hidden="true"><use href="/favicon.svg#crab" /></svg>
           <span>Ariel Onoriaga</span>
         </a>
+        <nav class="hud-nav" aria-label="Sections">
+          <a href="#record">Proof</a>
+          <a href="#huggian">Modules</a>
+          <a href="#work">Work</a>
+          <a href="/writing/">Writing</a>
+          <a href="/cv/">CV</a>
+        </nav>
         <div class="hud-level" aria-label="Seven years of experience">
           <span>LVL 7</span>
           <span class="xp"><i></i></span>
           <span class="hud-class">Engineer</span>
         </div>
-        <p class="hud-status"><i aria-hidden="true"></i>Taking contract quests · 20 h/week · UTC−3</p>
+        <p class="hud-status"><i aria-hidden="true"></i>Available · 20 h/week · UTC−3</p>
       </div>
 
       <div class="sky" aria-hidden="true">
@@ -117,12 +125,12 @@ const goatcounter = '';
 
       <div class="stagewrap" id="top">
         <div class="intro">
-          <p class="eyebrow">Player one</p>
+          <p class="eyebrow">Player one · Rust &amp; TypeScript</p>
           <h1><span>Ariel</span> <span>Onoriaga</span></h1>
           <p class="lede">{person.role}.</p>
           <p class="proof">
-            I build and run the systems where mistakes cost money. Seven years in, with one
-            production SaaS built and operated alone and gaming products that passed certification.
+            I build and run the systems where mistakes cost money. Seven years in, running the
+            five-product Huggian suite alone and shipping gaming systems that passed GLI certification.
           </p>
           <nav class="cta" aria-label="Contact">
             <a class="btn primary" href={mailto}>Email me</a>
@@ -134,16 +142,27 @@ const goatcounter = '';
 
         <div class="stage">
           <!-- A nod to the Huggian product graph: the things I built, and room for yours. -->
-          <svg class="constellation" viewBox="0 0 340 210" role="img" aria-label="Products I built: Huggian, Ez-Commerce, ez-catalog, ez-contador. One empty node labelled your project.">
+          <svg class="constellation" viewBox="0 0 390 258" role="img" aria-label="Huggian products I built: Huggian connected to ez-commerce, ez-catalog, ez-contador, ez-rails, ez-cochera, and one open node labelled your project.">
             <g class="links">
-              <path d="M170 104 L78 48" /><path d="M170 104 L262 60" /><path d="M78 48 L262 60" /><path d="M78 48 L74 158" />
-              <path class="open" d="M170 104 L268 166" />
+              <path d="M174 48 L76 112" />
+              <path d="M174 48 L280 62" />
+              <path d="M174 48 L244 148" />
+              <path d="M76 112 L280 62" />
+              <path d="M76 112 L72 202" />
+              <path d="M76 112 L244 148" />
+              <path d="M76 112 L176 214" />
+              <path d="M72 202 L244 148" />
+              <path d="M176 214 L72 202" />
+              <path d="M176 214 L244 148" />
+              <path class="open" d="M174 48 Q338 92 336 204" />
             </g>
-            <g class="node n0"><circle cx="170" cy="104" r="11" /><text x="170" y="134">Huggian</text></g>
-            <g class="node n1"><circle cx="78" cy="48" r="9" /><text x="78" y="28">Ez-Commerce</text></g>
-            <g class="node n2"><circle cx="262" cy="60" r="8" /><text x="262" y="40">ez-catalog</text></g>
-            <g class="node n3"><circle cx="74" cy="158" r="7" /><text x="74" y="184">ez-contador</text></g>
-            <g class="node n4"><circle cx="268" cy="166" r="9" /><text x="268" y="194">your project?</text></g>
+            <g class="node n0"><circle cx="174" cy="48" r="11" /><text x="174" y="26">Huggian</text></g>
+            <g class="node n1"><circle cx="76" cy="112" r="12" /><text x="58" y="88">ez-commerce</text></g>
+            <g class="node n2"><circle cx="280" cy="62" r="9" /><text x="280" y="42">ez-catalog</text></g>
+            <g class="node n3"><circle cx="72" cy="202" r="8.5" /><text x="72" y="228">ez-contador</text></g>
+            <g class="node n4"><circle cx="244" cy="148" r="9.5" /><text class="lbl-r" x="256" y="168">ez-rails</text></g>
+            <g class="node n5"><circle cx="176" cy="214" r="8.5" /><text x="176" y="240">ez-cochera</text></g>
+            <g class="node n6"><circle cx="336" cy="204" r="9.5" /><text x="336" y="232">your project?</text></g>
           </svg>
 
           <div class="walker">
@@ -224,6 +243,25 @@ const goatcounter = '';
         </p>
       </section>
 
+      <section id="huggian" class="huggian-modules" aria-labelledby="huggian-h">
+        <p class="tag" aria-hidden="true">Product ecosystem</p>
+        <h2 class="h" id="huggian-h">Huggian modules</h2>
+        <p class="note">Five connected production products plus a browser-only tools hub, sharing identity, billing and tax rails on <a href="https://huggian.com">huggian.com</a>.</p>
+        <div class="mod-grid">
+          {huggianModules.map((m) => (
+            <article class="mod" style={`--mod-accent:${m.hex}`}>
+              <header class="mod-head">
+                <h3><i class="mod-dot" aria-hidden="true"></i>{m.name}</h3>
+                <span class="mod-kind">{m.kind}</span>
+              </header>
+              <p class="mod-sum">{m.summary}</p>
+              <p class="mod-built"><strong>Built:</strong> {m.built}</p>
+              <p class="mod-link"><a href={m.href}>{m.label} →</a></p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section id="work">
         <p class="tag" aria-hidden="true">Quest log</p>
         <h2 class="h">Selected work</h2>
@@ -237,6 +275,21 @@ const goatcounter = '';
             <p class="more"><a href={mainQuest.link.href}>{mainQuest.link.label} →</a></p>
           </div>
           <ul>{mainQuest.points.map((p) => <li>{p}</li>)}</ul>
+        </article>
+
+        <article class="quest craft">
+          <div class="bench" aria-hidden="true">
+            <div class="grid">{workspaceSplit.inputs.map((i) => <span class="slot">{i}</span>)}</div>
+            <span class="arrow">→</span>
+            <span class="slot out">{workspaceSplit.output}</span>
+          </div>
+          <div>
+            <p class="kind">{workspaceSplit.kind}</p>
+            <h3>{workspaceSplit.title}</h3>
+            <p class="sum">{workspaceSplit.summary}</p>
+            <ul>{workspaceSplit.points.map((p) => <li>{p}</li>)}</ul>
+            <p class="stack">{workspaceSplit.stack.map((s) => <span>{s}</span>)}</p>
+          </div>
         </article>
 
         <article class="quest craft">
@@ -378,26 +431,106 @@ const goatcounter = '';
   :root {
     /* Huggian's cool paper and blue accent, plus the product colours from its graph. */
     --void: oklch(98% 0.006 240);
+    --surface: #fff;
     --deep: oklch(95.5% 0.012 240);
     --sky: oklch(91% 0.045 235);
     --ink: oklch(24% 0.045 255);
+    --ink-dark: oklch(20% 0.04 255);
     --ink-soft: oklch(42% 0.04 250);
+    --rule: oklch(86% 0.02 245);
+    --huggian: #3A5A78;
     --blue: oklch(50% 0.2 235);
     --blue-deep: oklch(40% 0.18 240);
-    --orange: oklch(68% 0.17 50);
-    --teal: oklch(64% 0.12 185);
+    --orange: #E8622C;
+    --teal: #14B8A6;
+    --contador: #3B82F6;
+    --rails: #F7BF2E;
+    --cochera: #8B5CF6;
     --red: oklch(60% 0.19 28);
     --gold: oklch(80% 0.15 85);
     --grass: oklch(66% 0.15 150);
     --grass-dark: oklch(52% 0.13 152);
     --dirt: oklch(55% 0.08 60);
     --dirt-dark: oklch(44% 0.07 55);
+    --cloud: #fff;
+    --sun-fill: var(--gold);
+    --sun-rays: oklch(88% 0.11 90 / 0.55);
+    --inv-bg: var(--ink);
+    --inv-fg: var(--void);
+    --inv-muted: oklch(90% 0.02 240);
+    --slot-bg: oklch(86% 0.02 250);
+    --slot-hi: oklch(96% 0.01 250);
+    --slot-lo: oklch(72% 0.03 250);
+    --cal-stroke: oklch(24% 0.045 255 / 0.08);
+    --cal-0: oklch(94% 0.012 245);
+    --cal-1: oklch(85% 0.07 152);
+    --cal-2: oklch(74% 0.13 152);
+    --cal-3: oklch(62% 0.15 152);
+    --cal-4: oklch(48% 0.13 155);
+    --heat-base: oklch(95% 0.02 60);
     --display: 'Syne', 'Avenir Next', 'Segoe UI', sans-serif;
     --title: 'Chango', 'Cooper Black', 'Arial Black', serif;
     --pixel: 'Pixelify Sans', ui-monospace, 'Courier New', monospace;
     --body: 'Figtree', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
     --px: 4px; /* one "pixel" of the world art */
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --void: oklch(16% 0.024 255);
+      --surface: oklch(20.5% 0.028 255);
+      --deep: oklch(18% 0.026 255);
+      --sky: oklch(12.5% 0.035 255);
+      --ink: oklch(93% 0.014 240);
+      --ink-dark: oklch(16% 0.03 255);
+      --ink-soft: oklch(76% 0.024 245);
+      --rule: oklch(34% 0.03 250);
+      --huggian: #9DBBD6;
+      --blue: oklch(62% 0.17 235);
+      --blue-deep: oklch(78% 0.13 230);
+      --orange: #F07A48;
+      --teal: #2DD4BF;
+      --contador: #60A5FA;
+      --rails: #F7BF2E;
+      --cochera: #A78BFA;
+      --red: oklch(66% 0.18 28);
+      --gold: oklch(82% 0.15 85);
+      --grass: oklch(66% 0.15 150);
+      --grass-dark: oklch(50% 0.13 152);
+      --dirt: oklch(40% 0.065 60);
+      --dirt-dark: oklch(30% 0.055 55);
+      --cloud: oklch(30% 0.035 252);
+      --sun-fill: oklch(92% 0.05 90);
+      --sun-rays: oklch(72% 0.08 240 / 0.35);
+      --inv-bg: oklch(11.5% 0.025 255);
+      --inv-fg: oklch(95% 0.012 240);
+      --inv-muted: oklch(80% 0.02 245);
+      --slot-bg: oklch(27% 0.03 255);
+      --slot-hi: oklch(36% 0.03 255);
+      --slot-lo: oklch(15% 0.025 255);
+      --cal-stroke: oklch(93% 0.014 240 / 0.1);
+      --cal-0: oklch(25% 0.028 255);
+      --cal-1: oklch(36% 0.07 152);
+      --cal-2: oklch(48% 0.12 152);
+      --cal-3: oklch(62% 0.15 152);
+      --cal-4: oklch(76% 0.15 152);
+      --heat-base: oklch(24% 0.025 255);
+    }
+    mark { background: linear-gradient(transparent 62%, oklch(46% 0.12 85) 62% 92%, transparent 92%); }
+    .btn.primary { background: var(--blue); color: var(--ink-dark); }
+    .tag { background: var(--ink); color: var(--ink-dark); }
+    .status.active, .sign, .slot.out, .hotbar li:hover { color: var(--ink-dark); }
+    .hotbar { background: var(--inv-bg); border: 2px solid var(--ink); }
+    .hotbar li { color: var(--ink); }
+    .hotbar li:hover small { color: var(--ink-dark); }
+    .crab * { stroke: var(--ink-dark); }
+    .crab-shadow { fill: oklch(8% 0.02 255 / 0.45); stroke: none; }
+    .pupil { fill: var(--ink-dark); stroke: none; }
+    .mouth { fill: var(--ink-dark); }
+    .node circle { stroke: var(--ink-dark); }
+    .n6 circle { stroke: var(--ink); }
+    .links path { opacity: 0.72; }
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -416,58 +549,67 @@ const goatcounter = '';
 
   /* ── World: sky, HUD, stage and ground ── */
   .world { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(var(--sky), var(--deep) 70%, var(--void)); }
-  .hud { position: relative; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.5rem; max-width: 70rem; margin: 0 auto; padding: 1rem 1.25rem;
-    font-family: var(--pixel); font-size: 0.95rem; }
-  .hud-name { display: flex; align-items: center; gap: 0.55rem; color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 0.95rem; letter-spacing: 0.14em; text-transform: uppercase; }
-  .hud-name svg { width: 1.9rem; height: 1.9rem; }
-  .hud-level { display: flex; align-items: center; gap: 0.55rem; margin-left: auto; }
-  .xp { width: 6.5rem; height: 0.8rem; border: 2px solid var(--ink); background: var(--void); padding: 1px; }
+  .hud { position: relative; z-index: 3; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.05rem; max-width: 70rem; margin: 0 auto; padding: 0.9rem 1.25rem;
+    font-family: var(--pixel); font-size: 0.9rem; }
+  .hud-name { display: flex; align-items: center; gap: 0.5rem; color: var(--ink); text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 0.9rem; letter-spacing: 0.11em; text-transform: uppercase; }
+  .hud-name svg { width: 1.75rem; height: 1.75rem; }
+  .hud-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.85rem; }
+  .hud-nav a { color: var(--ink); text-decoration: none; padding: 0.1rem 0; border-bottom: 2px solid transparent; }
+  .hud-nav a:hover { color: var(--blue-deep); border-bottom-color: var(--blue); }
+  .hud-level { display: flex; align-items: center; gap: 0.45rem; margin-left: auto; }
+  .xp { width: 4.8rem; height: 0.78rem; border: 2px solid var(--ink); background: var(--void); padding: 1px; }
   .xp i { display: block; height: 100%; width: 78%; background: repeating-linear-gradient(90deg, var(--grass) 0 6px, var(--grass-dark) 6px 8px); }
   .hud-class { color: var(--ink-soft); }
-  .hud-status { margin: 0; display: flex; align-items: center; gap: 0.5rem; }
-  .hud-status i { width: 0.7rem; height: 0.7rem; background: var(--grass); border: 2px solid var(--ink); }
+  .hud-status { margin: 0; display: flex; align-items: center; gap: 0.45rem; }
+  .hud-status i { width: 0.65rem; height: 0.65rem; background: var(--grass); border: 2px solid var(--ink); }
 
   .sky { position: absolute; inset: 0; z-index: -1; }
-  .sun { position: absolute; right: 9%; top: 5.5rem; width: 5.5rem; height: 5.5rem; }
-  .sun::before { content: ''; position: absolute; inset: -55%; background: repeating-conic-gradient(oklch(88% 0.11 90 / 0.55) 0 9deg, transparent 9deg 22.5deg); border-radius: 50%;
+  .sun { position: absolute; right: 4%; top: 3.6rem; width: 4.5rem; height: 4.5rem; }
+  .sun::before { content: ''; position: absolute; inset: -55%; background: repeating-conic-gradient(var(--sun-rays) 0 9deg, transparent 9deg 22.5deg); border-radius: 50%;
     mask-image: radial-gradient(circle, transparent 38%, #000 40%, transparent 70%); }
-  .sun span { position: absolute; inset: 0; border-radius: 50%; background: var(--gold); border: 4px solid var(--ink); }
-  .cloud { position: absolute; fill: #fff; opacity: 0.92; shape-rendering: crispEdges; }
+  .sun span { position: absolute; inset: 0; border-radius: 50%; background: var(--sun-fill); border: 4px solid var(--ink); }
+  .cloud { position: absolute; fill: var(--cloud); opacity: 0.92; shape-rendering: crispEdges; }
   .c1 { width: 11rem; top: 7rem; left: -12rem; }
   .c2 { width: 7rem; top: 14rem; left: -8rem; opacity: 0.75; }
   .c3 { width: 15rem; top: 21rem; left: -16rem; opacity: 0.6; }
 
-  .stagewrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 2rem; align-items: end; max-width: 70rem; margin: 0 auto;
-    padding: clamp(2.5rem, 7vw, 5rem) 1.25rem 0; min-height: clamp(30rem, 78vh, 46rem); }
-  .intro { padding-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .stagewrap { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: 2rem; align-items: end; max-width: 70rem; margin: 0 auto;
+    padding: clamp(1.5rem, 4.5vw, 3.25rem) 1.25rem 0; min-height: clamp(31rem, 76vh, 45rem); }
+  .intro { padding-bottom: clamp(1.75rem, 4.5vw, 3rem); }
   .eyebrow, .tag, .kind, .when, .lang { font-family: var(--pixel); font-weight: 500; letter-spacing: 0.04em; }
-  .eyebrow { font-size: 1.05rem; color: var(--blue-deep); margin-bottom: 0.8rem; }
-  h1 { font-family: var(--title); font-weight: 400; font-size: clamp(3rem, 9.6vw, 6.75rem); line-height: 0.98; color: var(--red);
-    -webkit-text-stroke: 2px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink), 7px 7px 0 var(--gold), 9px 9px 0 var(--ink); }
+  .eyebrow { font-size: 1.05rem; color: var(--blue-deep); margin-bottom: 0.65rem; }
+  h1 { font-family: var(--title); font-weight: 400; font-size: clamp(3rem, 9vw, 6.25rem); line-height: 0.98; color: var(--red);
+    -webkit-text-stroke: 2px var(--ink-dark); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink-dark), 7px 7px 0 var(--gold), 9px 9px 0 var(--ink-dark); }
   h1 span { display: inline-block; }
   h1 span:nth-child(2) { rotate: -1.5deg; }
-  .lede { font-family: var(--display); font-weight: 700; font-size: clamp(1.3rem, 2.5vw, 1.75rem); line-height: 1.25; max-width: 34rem; margin-top: 1.7rem; letter-spacing: -0.01em; }
+  .lede { font-family: var(--display); font-weight: 700; font-size: clamp(1.28rem, 2.4vw, 1.7rem); line-height: 1.24; max-width: 34rem; margin-top: 1.35rem; letter-spacing: -0.01em; }
   .proof { max-width: 32rem; color: var(--ink-soft); }
-  .cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin: 1.5rem 0 0; }
-  .btn { display: inline-block; padding: 0.65rem 1.15rem; border: 3px solid var(--ink); border-radius: 2px; background: var(--void); color: var(--ink);
+  .cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.25rem 0 0; }
+  .btn { display: inline-block; padding: 0.65rem 1.15rem; border: 3px solid var(--ink); border-radius: 2px; background: var(--surface); color: var(--ink);
     text-decoration: none; font-weight: 700; box-shadow: 4px 4px 0 var(--ink); transition: translate 0.12s, box-shadow 0.12s; }
   .btn:hover { translate: -2px -2px; box-shadow: 6px 6px 0 var(--ink); }
   .btn:active { translate: 3px 3px; box-shadow: 1px 1px 0 var(--ink); }
   .btn.primary { background: var(--blue); color: #fff; }
 
-  .stage { position: relative; z-index: 2; align-self: stretch; min-height: 26rem; }
-  .constellation { position: absolute; right: 0; top: 0; width: min(100%, 23rem); overflow: visible; }
-  .links path { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 200; stroke-dashoffset: 0; opacity: 0.55; }
-  .links .open { stroke-dasharray: 5 6; }
+  .stage { position: relative; z-index: 2; align-self: stretch; min-height: 31rem; }
+  .constellation { position: absolute; right: 0; top: 0; width: min(100%, 26rem); overflow: visible; }
+  .links path { fill: none; stroke: var(--ink-soft); stroke-width: 1.6; stroke-dasharray: 320; stroke-dashoffset: 0; opacity: 0.55; }
+  .links .open { stroke-dasharray: 5 6; stroke: var(--blue-deep); opacity: 0.85; }
   .node circle { stroke: var(--ink); stroke-width: 3; }
   .node text { font-family: var(--pixel); font-size: 13px; text-anchor: middle; fill: var(--ink); }
-  .n0 circle { fill: var(--blue); } .n1 circle { fill: var(--orange); } .n2 circle { fill: var(--teal); } .n3 circle { fill: oklch(62% 0.17 262); }
-  .n4 circle { fill: var(--void); stroke-dasharray: 4 4; }
-  .n4 text { fill: var(--blue-deep); }
+  .node .lbl-r { text-anchor: start; }
+  .n0 circle { fill: var(--huggian); }
+  .n1 circle { fill: var(--orange); }
+  .n2 circle { fill: var(--teal); }
+  .n3 circle { fill: var(--contador); }
+  .n4 circle { fill: var(--rails); }
+  .n5 circle { fill: var(--cochera); }
+  .n6 circle { fill: var(--void); stroke-dasharray: 4 4; }
+  .n6 text { fill: var(--blue-deep); }
   .node { transform-box: fill-box; transform-origin: center; }
 
   /* The crab walks sideways along the ground, as crabs do. */
-  .walker { position: absolute; bottom: -6px; left: 0; width: clamp(13rem, 30vw, 21rem); }
+  .walker { position: absolute; bottom: -6px; left: 0; width: clamp(12.5rem, 26vw, 19rem); }
   .crab { display: block; width: 100%; overflow: visible; cursor: grab; }
   .crab * { stroke: var(--ink); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
   .crab-shadow { fill: oklch(24% 0.045 255 / 0.2); stroke: none; }
@@ -487,7 +629,7 @@ const goatcounter = '';
   .legs-l { transform-origin: 100% 0%; } .legs-r { transform-origin: 0% 0%; }
   .crab-shadow { transform-origin: 50% 50%; }
   .bubble { position: absolute; left: 62%; bottom: 82%; margin: 0; font-family: var(--pixel); font-size: 1rem; white-space: nowrap; }
-  .bubble span { position: absolute; left: 0; bottom: 0; background: var(--void); border: 3px solid var(--ink); padding: 0.2rem 0.6rem; box-shadow: 3px 3px 0 var(--ink); opacity: 0; }
+  .bubble span { position: absolute; left: 0; bottom: 0; background: var(--surface); color: var(--ink); border: 3px solid var(--ink); padding: 0.2rem 0.6rem; box-shadow: 3px 3px 0 var(--ink); opacity: 0; }
   .bubble span:first-child { opacity: 1; }
 
   .ground { position: relative; z-index: 1; height: calc(var(--px) * 22); border-top: var(--px) solid var(--ink);
@@ -497,15 +639,14 @@ const goatcounter = '';
       radial-gradient(var(--dirt-dark) calc(var(--px) * 0.9), transparent calc(var(--px) * 1)) 0 calc(var(--px) * 7) / calc(var(--px) * 9) calc(var(--px) * 7),
       radial-gradient(oklch(70% 0.02 250) calc(var(--px) * 0.8), transparent calc(var(--px) * 0.9)) calc(var(--px) * 4) calc(var(--px) * 10) / calc(var(--px) * 17) calc(var(--px) * 9),
       var(--dirt); }
-  .sign { position: absolute; left: max(1.25rem, calc(50% - 33.75rem)); bottom: 100%; font-family: var(--pixel); font-size: 0.95rem; background: var(--gold); border: 3px solid var(--ink);
+  .sign { position: absolute; left: max(1.25rem, calc(50% - 33.75rem)); bottom: 100%; font-family: var(--pixel); font-size: 0.95rem; background: var(--gold); color: var(--ink-dark); border: 3px solid var(--ink);
     padding: 0.1rem 0.55rem; translate: 0 -0.75rem; }
   .sign::after { content: ''; position: absolute; left: 50%; top: 100%; width: 4px; height: 0.95rem; background: var(--ink); translate: -50% 0; }
 
   /* ── Sections ── */
   main, footer { max-width: 70rem; margin: 0 auto; padding: 0 1.25rem; }
   section { padding: clamp(2.75rem, 6vw, 4.5rem) 0 0; }
-  .tag { display: inline-block; font-size: 1rem; line-height: 1; color: var(--void); background: var(--ink); padding: 0.4rem 0.7rem 0.35rem; margin: 0 0 1.5rem; }
-  .tag { margin-bottom: 0.7rem; }
+  .tag { display: inline-block; font-size: 1rem; line-height: 1; color: var(--void); background: var(--ink); padding: 0.4rem 0.7rem 0.35rem; margin: 0 0 0.7rem; }
   .h { font-family: var(--display); font-weight: 800; font-size: clamp(1.7rem, 3.6vw, 2.5rem); letter-spacing: -0.02em; margin-bottom: 1.5rem; }
   h3 { font-family: var(--display); font-weight: 800; letter-spacing: -0.015em; }
   .offers { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 2.25rem; counter-reset: offer; }
@@ -527,31 +668,43 @@ const goatcounter = '';
   .kind, .when, .lang { font-size: 0.95rem; color: var(--blue-deep); }
 
   .achievements ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-  .achievements li { display: flex; gap: 0.8rem; align-items: flex-start; margin: 0; background: var(--ink); color: var(--void); padding: 0.85rem 0.9rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--blue); }
+  .achievements li { display: flex; gap: 0.8rem; align-items: flex-start; margin: 0; background: var(--inv-bg); color: var(--inv-fg); padding: 0.85rem 0.9rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--blue); }
   .achievements li:nth-child(even) { translate: 0 0.9rem; }
   .pix { flex: none; width: 2.5rem; height: 2.5rem; background: var(--void); padding: 0.3rem; shape-rendering: crispEdges; }
   .achievements strong { display: block; font-family: var(--pixel); font-size: 1.1rem; color: var(--gold); line-height: 1.2; }
-  .achievements span { display: block; font-size: 0.92rem; line-height: 1.4; color: oklch(90% 0.02 240); }
+  .achievements span { display: block; font-size: 0.92rem; line-height: 1.4; color: var(--inv-muted); }
 
   .about { max-width: 46rem; }
   .big { font-family: var(--display); font-weight: 700; font-size: clamp(1.35rem, 2.9vw, 2rem); line-height: 1.25; letter-spacing: -0.015em; }
 
-  .quest { border: 3px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--ink); padding: clamp(1.2rem, 3vw, 1.9rem); }
+  .mod-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.15rem; }
+  .mod { display: flex; flex-direction: column; gap: 0.55rem; border: 3px solid var(--ink); border-top: 7px solid var(--mod-accent, var(--blue)); border-radius: 2px; background: var(--surface); box-shadow: 5px 5px 0 var(--ink); padding: 1.1rem 1.15rem 1rem; }
+  .mod-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .mod h3 { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.22rem; color: var(--ink); }
+  .mod-dot { width: 0.72rem; height: 0.72rem; border-radius: 50%; background: var(--mod-accent, var(--blue)); border: 2px solid var(--ink); flex: none; }
+  .mod-kind { font-family: var(--pixel); font-size: 0.85rem; padding: 0.05rem 0.45rem; border: 2px solid var(--ink); background: var(--deep); color: var(--ink); }
+  .mod-sum { margin: 0; font-weight: 500; font-size: 0.98rem; line-height: 1.45; color: var(--ink); }
+  .mod-built { margin: 0; font-size: 0.91rem; line-height: 1.48; color: var(--ink-soft); flex-grow: 1; }
+  .mod-built strong { font-family: var(--pixel); font-weight: 500; color: var(--ink); }
+  .mod-link { margin: 0.25rem 0 0; font-family: var(--pixel); font-size: 0.92rem; }
+  .mod-link a { font-weight: 700; }
+
+  .quest { border: 3px solid var(--ink); background: var(--surface); box-shadow: 6px 6px 0 var(--ink); padding: clamp(1.2rem, 3vw, 1.9rem); }
   .quest h3 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0.3rem 0 0.7rem; }
   .quest ul { color: var(--ink-soft); font-size: 0.99rem; }
   .quest li::marker { content: '▸ '; color: var(--blue); }
   .sum { font-weight: 500; }
   .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.5rem; }
-  .stack span { font-family: var(--pixel); font-size: 0.9rem; padding: 0.05rem 0.5rem; border: 2px solid var(--ink); background: var(--deep); }
+  .stack span { font-family: var(--pixel); font-size: 0.9rem; padding: 0.05rem 0.5rem; border: 2px solid var(--ink); background: var(--deep); color: var(--ink); }
   .more { margin: 0.6rem 0 0; font-weight: 700; }
   .quest.main { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 1.5rem 2.5rem; align-items: start; border-left-width: 12px; border-left-color: var(--orange); }
   .quest.main h3 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
   .quest.craft { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem 2.5rem; align-items: center; margin: 1.75rem 0 0 clamp(0rem, 6vw, 5rem); background: var(--deep); }
   .bench { display: flex; align-items: center; gap: 0.9rem; font-family: var(--pixel); }
-  .bench .grid { display: grid; grid-template-columns: repeat(2, 4.4rem); gap: 0.35rem; }
-  .slot { display: grid; place-items: center; text-align: center; height: 4.4rem; background: oklch(86% 0.02 250); border: 3px solid var(--ink);
-    box-shadow: inset 3px 3px 0 oklch(96% 0.01 250), inset -3px -3px 0 oklch(72% 0.03 250); font-size: 0.95rem; line-height: 1.05; }
-  .slot.out { width: 6.6rem; height: 6.6rem; background: var(--gold); box-shadow: inset 3px 3px 0 oklch(92% 0.09 90), inset -3px -3px 0 oklch(66% 0.14 75); padding: 0.3rem; }
+  .bench .grid { display: grid; grid-template-columns: repeat(2, 4.8rem); gap: 0.35rem; }
+  .slot { display: grid; place-items: center; text-align: center; height: 4.5rem; padding: 0.2rem; background: var(--slot-bg); color: var(--ink); border: 3px solid var(--ink);
+    box-shadow: inset 3px 3px 0 var(--slot-hi), inset -3px -3px 0 var(--slot-lo); font-size: 0.88rem; line-height: 1.05; }
+  .slot.out { width: 6.8rem; height: 6.8rem; background: var(--gold); color: var(--ink-dark); box-shadow: inset 3px 3px 0 oklch(92% 0.09 90), inset -3px -3px 0 oklch(66% 0.14 75); padding: 0.35rem; font-size: 0.95rem; }
   .arrow { font-size: 2rem; line-height: 1; }
   .sides { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1.75rem; margin-top: 1.75rem; align-items: start; }
   .quest.side:last-child { margin-top: 2.25rem; }
@@ -562,7 +715,7 @@ const goatcounter = '';
   .campaign ul { color: var(--ink-soft); font-size: 0.99rem; }
   .when { margin: 0.2rem 0 0; display: flex; flex-direction: column; align-items: flex-start; gap: 0.45rem; }
   .status { font-size: 0.85rem; padding: 0.05rem 0.45rem; border: 2px solid var(--ink); color: var(--ink); background: var(--deep); }
-  .status.active { background: var(--grass); }
+  .status.active { background: var(--grass); color: var(--ink-dark); }
 
   .note { color: var(--ink-soft); }
   .oss { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 2.75rem; }
@@ -573,21 +726,21 @@ const goatcounter = '';
   .oss p { margin: 0.45rem 0 0; color: var(--ink-soft); font-size: 0.99rem; }
   .notes a { font-size: 1.2rem; line-height: 1.25; text-decoration-color: var(--orange); }
 
-  .hotbar { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.4rem; margin: 0 0 1.75rem; width: fit-content; max-width: 100%; background: var(--ink); }
+  .hotbar { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0.4rem; margin: 0 0 1.75rem; width: fit-content; max-width: 100%; background: var(--inv-bg); }
   .hotbar li { position: relative; display: grid; place-items: center; width: 5.6rem; height: 4.4rem; margin: 0; font-family: var(--pixel); font-size: 1rem;
-    background: oklch(86% 0.02 250); box-shadow: inset 3px 3px 0 oklch(96% 0.01 250), inset -3px -3px 0 oklch(72% 0.03 250); transition: translate 0.15s var(--ease); }
-  .hotbar li:hover { translate: 0 -5px; background: var(--gold); }
+    background: var(--slot-bg); color: var(--ink); box-shadow: inset 3px 3px 0 var(--slot-hi), inset -3px -3px 0 var(--slot-lo); transition: translate 0.15s var(--ease); }
+  .hotbar li:hover { translate: 0 -5px; background: var(--gold); color: var(--ink-dark); }
   .hotbar small { position: absolute; left: 0.35rem; top: 0.15rem; font-size: 0.75rem; color: var(--ink-soft); }
   .skills { display: grid; grid-template-columns: 10rem 1fr; gap: 0.8rem 1.5rem; margin: 0; max-width: 54rem; }
   .skills dt { font-family: var(--pixel); font-size: 1rem; color: var(--blue-deep); padding-top: 0.1rem; }
   .skills dd { margin: 0; }
 
   .coop { margin: clamp(3rem, 7vw, 5rem) 0 3rem; padding: 0; }
-  .coop > div { background: var(--ink); color: var(--void); padding: clamp(2rem, 6vw, 4rem); box-shadow: 8px 8px 0 var(--blue); }
-  .coop .tag { background: var(--gold); color: var(--ink); margin-bottom: 1.2rem; }
+  .coop > div { background: var(--inv-bg); color: var(--inv-fg); padding: clamp(2rem, 6vw, 4rem); border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--blue); }
+  .coop .tag { background: var(--gold); color: var(--ink-dark); margin-bottom: 1.2rem; }
   .coop h2 { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 4.6vw, 3.2rem); letter-spacing: -0.02em; max-width: 36rem; margin-bottom: 1rem; }
   .coop p { max-width: 36rem; }
-  .coop .btn { border-color: var(--void); box-shadow: 4px 4px 0 var(--gold); }
+  .coop .btn { border-color: var(--inv-fg); box-shadow: 4px 4px 0 var(--gold); }
   .coop .btn:hover { box-shadow: 6px 6px 0 var(--gold); }
   footer { padding-bottom: 3rem; color: var(--ink-soft); font-size: 0.92rem; }
 
@@ -606,7 +759,7 @@ const goatcounter = '';
     .links path { animation: draw 1.4s var(--ease) 0.5s both; }
     .links .open { animation: march 1.2s linear infinite; }
     .node { animation: twinkle 3.2s ease-in-out infinite; }
-    .n1 { animation-delay: -0.8s; } .n2 { animation-delay: -1.6s; } .n3 { animation-delay: -2.4s; } .n4 { animation-delay: -1.1s; }
+    .n1 { animation-delay: -0.6s; } .n2 { animation-delay: -1.1s; } .n3 { animation-delay: -1.7s; } .n4 { animation-delay: -2.2s; } .n5 { animation-delay: -2.7s; } .n6 { animation-delay: -1.4s; }
 
     /* The crab: a 16-second routine. Walk right, stop and wave, walk back, hop. Stepped timing = drawn "on twos". */
     .walker { animation: walk 16s linear infinite; }
@@ -634,6 +787,8 @@ const goatcounter = '';
     .sign { animation: signbob 1.8s steps(2) infinite; }
     .achievements li { animation: toast 0.5s var(--ease) both; }
     .achievements li:nth-child(2) { animation-delay: 0.12s; } .achievements li:nth-child(3) { animation-delay: 0.24s; } .achievements li:nth-child(4) { animation-delay: 0.36s; }
+    .mod { transition: translate 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+    .mod:hover { translate: -2px -2px; box-shadow: 7px 7px 0 var(--mod-accent, var(--blue)); }
     .quest { transition: translate 0.25s var(--ease), box-shadow 0.25s var(--ease); }
     .quest:hover { translate: -3px -3px; box-shadow: 10px 10px 0 var(--blue); }
   }
@@ -644,10 +799,10 @@ const goatcounter = '';
   @keyframes blink { 50% { opacity: 0.3; } }
   @keyframes pop { 0% { opacity: 0; scale: 0.5; rotate: -8deg; } 100% { opacity: 1; scale: 1; } }
   @keyframes rise { 0% { opacity: 0; translate: 0 1.2rem; } 100% { opacity: 1; translate: 0 0; } }
-  @keyframes draw { from { stroke-dashoffset: 200; } }
+  @keyframes draw { from { stroke-dashoffset: 320; } }
   @keyframes march { to { stroke-dashoffset: -22; } }
-  @keyframes twinkle { 50% { scale: 1.12; } }
-  @keyframes walk { 0% { left: 0; } 38% { left: calc(100% - clamp(13rem, 30vw, 21rem)); } 50% { left: calc(100% - clamp(13rem, 30vw, 21rem)); } 88% { left: 0; } 100% { left: 0; } }
+  @keyframes twinkle { 50% { scale: 1.1; } }
+  @keyframes walk { 0% { left: 0; } 38% { left: calc(100% - clamp(12.5rem, 26vw, 19rem)); } 50% { left: calc(100% - clamp(12.5rem, 26vw, 19rem)); } 88% { left: 0; } 100% { left: 0; } }
   @keyframes bob { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(5px) scale(1.04, 0.95); } }
   @keyframes hop { 0%, 90%, 100% { transform: translateY(0) scale(1, 1); } 91.5% { transform: translateY(6px) scale(1.12, 0.84); } 94% { transform: translateY(-70px) scale(0.94, 1.08); } 96.5% { transform: translateY(0) scale(1.1, 0.88); } 98% { transform: translateY(-18px); } }
   @keyframes shadow { 0%, 90%, 96.5%, 100% { transform: scaleX(1); opacity: 1; } 94% { transform: scaleX(0.55); opacity: 0.5; } }
@@ -664,39 +819,44 @@ const goatcounter = '';
   @keyframes hoverhop { 0%, 100% { transform: translateY(0) scale(1, 1); } 18% { transform: translateY(8px) scale(1.14, 0.82); } 50% { transform: translateY(-80px) scale(0.93, 1.1); } 82% { transform: translateY(0) scale(1.1, 0.88); } 91% { transform: translateY(-14px) scale(1, 1); } }
   @keyframes cheer { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg); } }
   @keyframes glow { 50% { box-shadow: inset 3px 3px 0 oklch(92% 0.09 90), inset -3px -3px 0 oklch(66% 0.14 75), 0 0 0 6px oklch(80% 0.15 85 / 0.35); } }
-  @keyframes feed { 0%, 100% { background: oklch(86% 0.02 250); } 12% { background: var(--gold); } }
+  @keyframes feed { 0%, 100% { background: var(--slot-bg); } 12% { background: var(--gold); color: var(--ink-dark); } }
   @keyframes nudge { 50% { translate: 5px 0; } }
   @keyframes signbob { 50% { translate: 0 -1rem; } }
   @keyframes toast { from { opacity: 0; transform: translateY(-1rem); } }
 
-  @media (max-width: 62rem) {
+  @media (max-width: 64rem) {
     .achievements ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .achievements li:nth-child(even) { translate: none; }
+    .mod-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .hud-level { margin-left: 0; }
   }
   @media (max-width: 56rem) {
-    .stagewrap { grid-template-columns: 1fr; min-height: 0; gap: 0; }
-    .intro { padding-bottom: 1.5rem; }
-    .stage { min-height: clamp(13rem, 52vw, 19rem); }
-    .constellation { display: none; }
-    .walker { width: clamp(11rem, 44vw, 15rem); }
-    @keyframes walk { 0% { left: 0; } 38%, 50% { left: calc(100% - clamp(11rem, 44vw, 15rem)); } 88%, 100% { left: 0; } }
+    .stagewrap { grid-template-columns: 1fr; min-height: 0; gap: 0.75rem; }
+    .intro { padding-bottom: 0.5rem; }
+    .stage { min-height: 0; padding-bottom: clamp(12.5rem, 44vw, 16rem); }
+    .constellation { position: static; display: block; width: min(100%, 24rem); margin: 0 auto 0.25rem; }
+    .walker { width: clamp(11rem, 42vw, 14.5rem); }
+    @keyframes walk { 0% { left: 0; } 38%, 50% { left: calc(100% - clamp(11rem, 42vw, 14.5rem)); } 88%, 100% { left: 0; } }
     .quest.main, .quest.craft, .sides { grid-template-columns: 1fr; }
     .offers { grid-template-columns: 1fr; gap: 1.5rem; }
     .quest.craft { margin-left: 0; }
     .quest.side:last-child { margin-top: 0; }
   }
   @media (max-width: 40rem) {
-    .oss { grid-template-columns: 1fr; }
+    .oss, .mod-grid { grid-template-columns: 1fr; }
     .achievements ul { grid-template-columns: 1fr; }
     .campaign > li { grid-template-columns: 1fr; gap: 0.5rem; }
     .when { flex-direction: row; align-items: center; }
     .skills { grid-template-columns: 1fr; gap: 0.15rem; }
     .skills dd { margin-bottom: 0.7rem; }
     .hotbar li { width: 4.7rem; height: 3.9rem; font-size: 0.9rem; }
-    .hud-status { display: none; }
-    .sun { width: 3.4rem; height: 3.4rem; right: 1rem; top: 0.9rem; }
-    .hud { padding-right: 5.5rem; }
-    h1 { -webkit-text-stroke-width: 1.5px; text-shadow: 2px 2px 0 var(--ink), 5px 5px 0 var(--gold), 6px 6px 0 var(--ink); }
+    .hud-status, .hud-level { display: none; }
+    .sun { width: 3.2rem; height: 3.2rem; right: 1rem; top: 0.9rem; }
+    .hud { padding-right: 5rem; gap: 0.45rem 0.9rem; }
+    .constellation { width: min(100%, 21.5rem); }
+    .bench .grid { grid-template-columns: repeat(2, 4.2rem); }
+    .slot { height: 4rem; font-size: 0.8rem; }
+    .slot.out { width: 6rem; height: 6rem; font-size: 0.85rem; }
+    h1 { -webkit-text-stroke-width: 1.5px; text-shadow: 2px 2px 0 var(--ink-dark), 5px 5px 0 var(--gold), 6px 6px 0 var(--ink-dark); }
   }
 </style>

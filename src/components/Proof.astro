@@ -1,6 +1,6 @@
 ---
 // "Stats screen": the shipping record as real charts. All figures come from src/data/proof.ts.
-import { contributions, ezCommerce, shopRhythm } from '../data/proof';
+import { contributions, ezCommerce, shopRhythm, workspaceSplitBench } from '../data/proof';
 
 const nf = new Intl.NumberFormat('en-US');
 const CELL = 11;
@@ -26,6 +26,8 @@ const MONTH_LABELS = weeks.flatMap((_, x) => {
 const heat = shopRhythm.heat;
 const heatMax = Math.max(...heat.flat());
 const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const benchMax = Math.max(...workspaceSplitBench.scenarios.map((s) => s.beforeSec));
+const sec = (n: number) => `${n.toFixed(2)}s`;
 ---
 <section id="record" class="record" aria-labelledby="record-h">
   <p class="tag" aria-hidden="true">Stats screen</p>
@@ -34,7 +36,7 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   <figure class="panel cal">
     <div class="cal-scroll">
       <svg viewBox={`0 0 ${W} ${H + 18}`} role="img"
-        aria-label={`GitHub contributions over the past year, work and personal accounts combined: ${nf.format(contributions.total)} contributions on ${contributions.activeDays} days.`}>
+        aria-label={`GitHub contributions from ${contributions.from} to ${contributions.to}, work and personal accounts combined: ${nf.format(contributions.total)} contributions on ${contributions.activeDays} days.`}>
         {MONTH_LABELS.map(({ x, m }) => <text class="mlabel" x={x * (CELL + GAP)} y="9">{m}</text>)}
         {weeks.map((w, x) => (
           <g class="col" style={`--x:${x}`}>
@@ -44,7 +46,7 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       </svg>
     </div>
     <figcaption>
-      <strong>{nf.format(contributions.total)}</strong> contributions on GitHub in the past year, on
+      <strong>{nf.format(contributions.total)}</strong> contributions on GitHub ({contributions.from} to {contributions.to}), on
       {' '}{contributions.activeDays} different days: {nf.format(contributions.work)} at my day job and
       {' '}{nf.format(contributions.personal)} on my own products, across two accounts. Nearly all of it is in private repositories.
     </figcaption>
@@ -58,7 +60,10 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         <div><dt>Database migrations</dt><dd>{nf.format(ezCommerce.migrations)}</dd></div>
         <div><dt>Commits, last 60 days</dt><dd>{nf.format(ezCommerce.commits60d)}</dd></div>
       </dl>
-      <figcaption>Small, frequent releases are how one engineer keeps a live product safe to change.</figcaption>
+      <figcaption>
+        {ezCommerce.crates}-crate Cargo workspace across {ezCommerce.contexts} bounded contexts (snapshot {ezCommerce.asOf}).
+        Small, frequent releases are how one engineer keeps a live product safe to change.
+      </figcaption>
     </figure>
 
     <figure class="panel rhythm">
@@ -75,14 +80,35 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         {Array.from({ length: 16 }, (_, h) => <span class="hl">{h % 4 === 0 ? `${8 + h}h` : ''}</span>)}
       </div>
       <figcaption>
-        {nf.format(shopRhythm.sales)} real sales over {shopRhythm.days} days, across {shopRhythm.shops} shops. Anonymous totals: no shop or customer is identifiable.
+        {nf.format(shopRhythm.sales)} real sales over {shopRhythm.days} days (to {shopRhythm.asOf}), across {shopRhythm.shops} shops. Anonymous totals: no shop or customer is identifiable.
       </figcaption>
     </figure>
   </div>
+
+  <figure class="panel bench-panel">
+    <p class="kind">Ez-Commerce Rust workspace split · 1 crate → {workspaceSplitBench.crates} crates (now {ezCommerce.crates})</p>
+    <ul class="bchart" aria-label={`Incremental build time reduction after splitting Ez-Commerce into a ${workspaceSplitBench.crates}-crate Cargo workspace`}>
+      {workspaceSplitBench.scenarios.map((s) => (
+        <li>
+          <div class="bhead">
+            <span class="blabel">{s.label}</span>
+            <span class="bval"><strong>{sec(s.beforeSec)} → {sec(s.afterSec)}</strong> <em>{s.speedup}</em></span>
+          </div>
+          <div class="btracks" aria-hidden="true">
+            <span class="bar before" style={`--w:${((s.beforeSec / benchMax) * 100).toFixed(1)}%`}></span>
+            <span class="bar after" style={`--w:${((s.afterSec / benchMax) * 100).toFixed(1)}%`}></span>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <figcaption>
+      1-line body-edit incremental rebuilds on the same laptop (median of 5 alternating pairs, {workspaceSplitBench.asOf}): single crate vs {workspaceSplitBench.crates}-crate split (commit {workspaceSplitBench.commit}; now {ezCommerce.crates} crates with ez-subscriptions).
+    </figcaption>
+  </figure>
 </section>
 
 <style>
-  .record .panel { margin: 0; border: 3px solid var(--ink); background: #fff; box-shadow: 6px 6px 0 var(--ink); padding: clamp(1rem, 2.6vw, 1.5rem); }
+  .record .panel { margin: 0; border: 3px solid var(--ink); background: var(--surface); box-shadow: 6px 6px 0 var(--ink); padding: clamp(1rem, 2.6vw, 1.5rem); }
   .record figcaption { margin-top: 0.9rem; color: var(--ink-soft); font-size: 0.97rem; line-height: 1.5; }
   .record figcaption strong { color: var(--ink); font-family: var(--display); font-weight: 800; }
 
@@ -90,25 +116,38 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   .cal-scroll svg { direction: ltr; }
   .cal svg { display: block; width: 100%; min-width: 640px; height: auto; }
   .mlabel { font-family: var(--pixel); font-size: 9px; fill: var(--ink-soft); }
-  .cal rect { stroke: oklch(24% 0.045 255 / 0.08); stroke-width: 1; }
-  .l0 { fill: oklch(94% 0.012 245); }
-  .l1 { fill: oklch(85% 0.07 152); }
-  .l2 { fill: oklch(74% 0.13 152); }
-  .l3 { fill: oklch(62% 0.15 152); }
-  .l4 { fill: oklch(48% 0.13 155); }
+  .cal rect { stroke: var(--cal-stroke); stroke-width: 1; }
+  .l0 { fill: var(--cal-0); }
+  .l1 { fill: var(--cal-1); }
+  .l2 { fill: var(--cal-2); }
+  .l3 { fill: var(--cal-3); }
+  .l4 { fill: var(--cal-4); }
 
   .duo { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 1.75rem; margin-top: 1.75rem; align-items: start; }
   .record .kind { margin: 0 0 0.9rem; }
   .nums dl { margin: 0; display: grid; gap: 0.9rem; }
-  .nums dl div { display: grid; gap: 0.1rem; padding-bottom: 0.75rem; border-bottom: 2px dashed oklch(86% 0.02 245); }
+  .nums dl div { display: grid; gap: 0.1rem; padding-bottom: 0.75rem; border-bottom: 2px dashed var(--rule); }
   .nums dt { font-family: var(--pixel); font-size: 0.95rem; color: var(--ink-soft); }
   .nums dd { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(2rem, 4.2vw, 2.8rem); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
   .nums dl div:first-child dd { color: var(--orange); }
 
   .hgrid { display: grid; grid-template-columns: 2.4rem repeat(16, minmax(0, 1fr)); gap: 3px; align-items: center; }
-  .hgrid i { aspect-ratio: 1.15; border-radius: 2px; background: color-mix(in oklch, var(--orange) calc(var(--v) * 100%), oklch(95% 0.02 60)); }
+  .hgrid i { aspect-ratio: 1.15; border-radius: 2px; background: color-mix(in oklch, var(--orange) calc(var(--v) * 100%), var(--heat-base)); }
   .dl, .hl { font-family: var(--pixel); font-size: 0.75rem; color: var(--ink-soft); line-height: 1; }
   .hl { white-space: nowrap; overflow: visible; }
+
+  .bench-panel { margin-top: 1.75rem; }
+  .bchart { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 2rem; }
+  .bchart li { margin: 0; display: grid; gap: 0.35rem; }
+  .bhead { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  .blabel { font-weight: 700; font-size: 0.96rem; color: var(--ink); }
+  .bval { font-family: var(--pixel); font-size: 0.95rem; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 0.45rem; }
+  .bval strong { font-weight: 700; color: var(--ink); }
+  .bval em { font-style: normal; padding: 0.05rem 0.4rem; border: 2px solid var(--ink); background: var(--grass); color: var(--ink-dark); font-size: 0.85rem; line-height: 1.2; }
+  .btracks { display: grid; gap: 4px; }
+  .bar { display: block; height: 9px; width: var(--w); border: 2px solid var(--ink); border-radius: 1px; }
+  .bar.before { background: var(--slot-bg); }
+  .bar.after { background: var(--teal); }
 
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
@@ -119,5 +158,8 @@ const DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   @keyframes rise { from { opacity: 0; transform: translateY(6px); } }
   @keyframes pop { from { opacity: 0; transform: scale(0.85); } }
 
-  @media (max-width: 56rem) { .duo { grid-template-columns: 1fr; } }
+  @media (max-width: 56rem) {
+    .duo { grid-template-columns: 1fr; }
+    .bchart { grid-template-columns: 1fr; }
+  }
 </style>
