@@ -1,6 +1,3 @@
-// Real figures behind the "Shipping record" section. Snapshot taken 2026-11-24.
-// Refresh by re-running the queries noted next to each value.
-
 /** GitHub contribution calendar for the past year, one array per week (Sun..Sat): the
  *  day-by-day sum of two accounts, the work one (employer repositories) and the personal one
  *  (own products and open source). Source: GitHub GraphQL contributionCalendar for each account.
