@@ -1,13 +1,81 @@
 // Everything the site says about Ariel lives here, so the home page, the CV and
 // llms.txt cannot drift apart. Facts mirror the verified portfolio notes:
 // no employer, operator or customer names beyond what is already public.
+import { ezCommerce, workspaceSplitBench } from './proof';
+
+const fmtSec = (n: number) => `${n.toFixed(2)}s`;
+const [salesBench, catalogBench, coreBench] = workspaceSplitBench.scenarios;
+
 export const email = 'onoriagaariel@gmail.com';
 
 export const achievements = [
-  { icon: 'flag', title: 'Solo run', text: 'Founded, built and operate a production SaaS alone.' },
+  { icon: 'flag', title: 'Solo run', text: 'Founded, built and operate the five-product Huggian suite alone.' },
   { icon: 'shield', title: 'Passed the audit', text: 'Shipped gaming products that passed GLI certification.' },
   { icon: 'crate', title: 'Seven crates', text: 'Published a seven-crate Rust workspace on crates.io.' },
   { icon: 'star', title: 'Fast climb', text: 'Trainee to lead of a seven-person team in under two years.' },
+];
+
+export const huggianModules = [
+  {
+    slug: 'ez-commerce',
+    name: 'ez-commerce',
+    kind: 'Commerce SaaS',
+    hex: '#E8622C',
+    href: 'https://huggian.com/ez-commerce',
+    label: 'huggian.com/ez-commerce',
+    summary: 'Point of sale, inventory, cash shifts, ARCA electronic invoicing, online storefront and AI assistant for retail shops.',
+    built: `Offline-capable SolidJS PWA on a ${ezCommerce.crates}-crate Rust backend (Axum, SQLx, PostgreSQL) with ${ezCommerce.contexts} bounded contexts, ${ezCommerce.migrations} migrations and a transactional outbox.`,
+  },
+  {
+    slug: 'ez-catalog',
+    name: 'ez-catalog',
+    kind: 'Product API',
+    hex: '#14B8A6',
+    href: 'https://huggian.com/ez-catalog',
+    label: 'huggian.com/ez-catalog',
+    summary: 'Barcode lookup API (EAN-13, UPC-12, ISBN) returning normalized names, brands, categories and images across 10 verticals.',
+    built: 'Rust REST service with in-memory and PostgreSQL cache, parallel fan-out across 87 external sources, sliding-window rate limits, scoped API keys and moderated corrections.',
+  },
+  {
+    slug: 'ez-contador',
+    name: 'ez-contador',
+    kind: 'Accountant portal',
+    hex: '#3B82F6',
+    href: 'https://huggian.com/ez-contador',
+    label: 'huggian.com/ez-contador',
+    summary: 'Multi-client workspace for accounting firms tracking ez-commerce shops: ARCA status, sales-to-invoice matching, batch invoicing and tax deadlines.',
+    built: 'CUIT-delegated multi-tenant portal with 12-month tax-tier ceiling checks, batch invoice issuance and calendar exports without storing client tax passwords.',
+  },
+  {
+    slug: 'ez-rails',
+    name: 'ez-rails',
+    kind: 'Payments & tax API',
+    hex: '#F7BF2E',
+    href: 'https://huggian.com/ez-rails',
+    label: 'huggian.com/ez-rails',
+    summary: 'Payment rails and ARCA invoicing API connecting Mercado Pago and banks to reconcile incoming transfers and deliver signed webhooks.',
+    built: 'Scoped sandbox/live API keys, string-decimal amounts, idempotent writes, stateful and stateless transfer matching, CBU micro-deposit verification, HMAC webhooks with replay and the ARCA invoicing engine.',
+  },
+  {
+    slug: 'ez-cochera',
+    name: 'ez-cochera',
+    kind: 'Parking console',
+    hex: '#8B5CF6',
+    href: 'https://huggian.com/ez-cochera',
+    label: 'huggian.com/ez-cochera',
+    summary: 'High-speed parking lot and garage console with F10/F11/F12 shortcuts, barcode tickets, tiered 5-minute rates, daily caps and monthly passes.',
+    built: 'Keyboard-first operational app with silent 58/80 mm thermal printing (Windows Print Agent and Android Sunmi/Bluetooth), dual ez-commerce or standalone checkout modes and fail-open exits.',
+  },
+  {
+    slug: 'herramientas',
+    name: 'Free tools',
+    kind: 'Free tools hub',
+    hex: '#1466C4',
+    href: 'https://huggian.com/herramientas',
+    label: 'huggian.com/herramientas',
+    summary: 'Browser-only calculators and utilities for merchants, accountants and parking lots: tax tiers, reverse Mercado Pago margin, Law 4.827 signs and CUIT/CBU validation.',
+    built: 'Zero-signup Astro tools running BCRA check-digit and Modulo 11 validation, ARCA/SIFERE .ics calendar export, reverse fee math and print-ready A4 PDF output.',
+  },
 ];
 
 export const mainQuest = {
@@ -15,13 +83,28 @@ export const mainQuest = {
   kind: 'Main quest · multi-tenant commerce SaaS · founder, sole engineer',
   summary: 'Stock, point-of-sale and electronic invoicing for small and mid-size retailers. In production.',
   points: [
-    'Rust backend (Axum, SQLx, Tokio) on PostgreSQL, organised as about 40 bounded contexts with 440+ migrations.',
+    `Rust backend (Axum, SQLx, Tokio) on PostgreSQL: ${ezCommerce.crates}-crate Cargo workspace across ${ezCommerce.contexts} bounded contexts with ${ezCommerce.migrations} migrations.`,
     'Offline-capable POS that syncs when the connection returns.',
-    'Transactional outbox with idempotency keys, payment-provider integration and government tax invoicing.',
+    'Transactional outbox with idempotency keys, Mercado Pago reconciliation and ARCA electronic invoicing through ez-rails.',
     'Property-based and mutation testing; rollouts follow runbooks with precheck and rollback SQL.',
   ],
   stack: ['Rust', 'Axum', 'PostgreSQL', 'SolidJS', 'TypeScript'],
-  link: { href: 'https://ez-commerce.huggian.com', label: 'ez-commerce.huggian.com' },
+  link: { href: 'https://huggian.com/ez-commerce', label: 'huggian.com/ez-commerce' },
+};
+
+export const workspaceSplit = {
+  title: `One Rust monolith into ${ezCommerce.crates} crates`,
+  kind: 'Crafting · Cargo workspace split in Rust',
+  summary:
+    `Split Ez-Commerce’s 543k-line single-crate Rust backend into a ${ezCommerce.crates}-crate Cargo workspace (core, ${ezCommerce.moduleCrates} module crates and the server binary) with zero downtime and measurable compile-time gates.`,
+  inputs: ['ez-sales', 'ez-catalog', 'ez-pricing', `+${ezCommerce.moduleCrates - 3} crates`],
+  output: `${ezCommerce.crates}-crate workspace`,
+  points: [
+    `Measured at ${workspaceSplitBench.crates} crates before adding ez-subscriptions: 1-line sales edit dropped from ${fmtSec(salesBench.beforeSec)} to ${fmtSec(salesBench.afterSec)} (${salesBench.speedup} faster); catalog edits from ${fmtSec(catalogBench.beforeSec)} to ${fmtSec(catalogBench.afterSec)} (${catalogBench.speedup}); core edits from ${fmtSec(coreBench.beforeSec)} to ${fmtSec(coreBench.afterSec)} (${coreBench.speedup}).`,
+    'Core merges module sub-routers through an HttpModule trait so core never depends on peeled crates and modules cannot wrap each other’s routes.',
+    `Extracted ez-sales, ez-catalog, ez-pricing, ez-cash, ez-mercadopago, ez-recommendations, ez-catalog-imports and ${ezCommerce.moduleCrates - 7} more module crates while keeping the binary contract unchanged.`,
+  ],
+  stack: ['Rust', 'Cargo workspace', 'Axum', 'SQLx'],
 };
 
 export const crafting = {
@@ -77,7 +160,7 @@ export const experience = [
     role: 'Founder and engineer, Huggian',
     when: 'Feb 2026 – present',
     status: 'Active',
-    points: ['Built and run Ez-Commerce and its billing, fiscal and identity platform end to end (Rust, TypeScript, PostgreSQL).'],
+    points: ['Built and run the Huggian suite (ez-commerce, ez-catalog, ez-contador, ez-rails, ez-cochera) and its billing, fiscal and identity platform end to end (Rust, TypeScript, PostgreSQL).'],
   },
   {
     role: 'Trainee to team lead, PicallEx',
@@ -148,7 +231,7 @@ export const person = {
 export const description =
   'Ariel Onoriaga: senior Rust and TypeScript engineer for payments, billing and commerce backends. Seven years in, available on contract to US teams.';
 export const summary =
-  'I build and run the systems where mistakes cost money: payments, billing, commerce, and the infrastructure under them. Seven years in, with one production SaaS built and operated alone and gaming products that passed GLI certification.';
+  'I build and run the systems where mistakes cost money: payments, billing, commerce, and the infrastructure under them. Seven years in, running the five-product Huggian suite alone and shipping gaming systems that passed GLI certification.';
 
 // Pre-filled enquiry: a three-line brief is all I ask for.
 export const mailto =

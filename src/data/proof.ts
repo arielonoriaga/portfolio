@@ -1,4 +1,4 @@
-// Real figures behind the "Shipping record" section. Snapshot taken 2026-11-16.
+// Real figures behind the "Shipping record" section. Snapshot taken 2026-11-24.
 // Refresh by re-running the queries noted next to each value.
 
 /** GitHub contribution calendar for the past year, one array per week (Sun..Sat): the
@@ -16,8 +16,30 @@ export const contributions = {
 };
 
 /** Ez-Commerce release history. Source: git tags and migrations in the ez-commerce repo. */
-export const ezCommerce = { since: '2026-03-30', releases: 869, migrations: 464, commits60d: 1828 };
+export const ezCommerce = {
+  since: '2026-03-30',
+  asOf: '2026-11-24',
+  releases: 915,
+  migrations: 481,
+  commits60d: 2774,
+  crates: 30,
+  moduleCrates: 28,
+  contexts: 44,
+};
+
+export const workspaceSplitBench = {
+  asOf: '2026-11-24',
+  commit: '443687d9c',
+  crates: 29,
+  moduleCrates: 27,
+  scenarios: [
+    { label: 'Sales edit (ez-sales)', beforeSec: 35.79, afterSec: 5.06, speedup: '7.1×' },
+    { label: 'Catalog edit (ez-catalog)', beforeSec: 48.04, afterSec: 5.55, speedup: '8.7×' },
+    { label: 'Core edit (core lib)', beforeSec: 47.67, afterSec: 9.62, speedup: '5.0×' },
+    { label: 'Core edit + server binary', beforeSec: 26.19, afterSec: 14.9, speedup: '1.8×' },
+  ],
+};
 
 /** When the shops using Ez-Commerce sell: per-mille of sales by weekday (Mon..Sun) and hour (08..23).
  *  Source: anonymous aggregate over production sales, 60 days to 2026-11-16 (62,647 sales, 14 shops). */
-export const shopRhythm = { sales: 62647, shops: 14, days: 60, heat: [[2, 5, 6, 7, 10, 9, 8, 6, 7, 9, 12, 12, 14, 12, 8, 4], [3, 4, 5, 6, 8, 8, 6, 6, 7, 8, 11, 14, 15, 14, 9, 6], [3, 4, 6, 7, 10, 9, 7, 7, 8, 9, 12, 12, 15, 15, 11, 6], [3, 4, 6, 8, 10, 10, 8, 6, 9, 10, 11, 14, 16, 14, 10, 6], [3, 4, 6, 8, 11, 10, 8, 7, 7, 9, 11, 13, 14, 18, 14, 10], [1, 3, 5, 8, 11, 10, 8, 7, 8, 9, 11, 14, 17, 19, 15, 10], [0, 2, 4, 7, 11, 11, 9, 7, 8, 10, 10, 12, 14, 15, 11, 7]] as number[][] };
+export const shopRhythm = { asOf: '2026-11-16', sales: 62647, shops: 14, days: 60, heat: [[2, 5, 6, 7, 10, 9, 8, 6, 7, 9, 12, 12, 14, 12, 8, 4], [3, 4, 5, 6, 8, 8, 6, 6, 7, 8, 11, 14, 15, 14, 9, 6], [3, 4, 6, 7, 10, 9, 7, 7, 8, 9, 12, 12, 15, 15, 11, 6], [3, 4, 6, 8, 10, 10, 8, 6, 9, 10, 11, 14, 16, 14, 10, 6], [3, 4, 6, 8, 11, 10, 8, 7, 7, 9, 11, 13, 14, 18, 14, 10], [1, 3, 5, 8, 11, 10, 8, 7, 8, 9, 11, 14, 17, 19, 15, 10], [0, 2, 4, 7, 11, 11, 9, 7, 8, 10, 10, 12, 14, 15, 11, 7]] as number[][] };
