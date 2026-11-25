@@ -74,9 +74,8 @@ const goatcounter = '';
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="canonical" href="https://arielonoriaga.huggian.com/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#dcecf9" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0e1624" media="(prefers-color-scheme: dark)" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#dcecf9" />
+    <meta name="color-scheme" content="light" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -474,63 +473,6 @@ const goatcounter = '';
     --body: 'Figtree', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
     --px: 4px; /* one "pixel" of the world art */
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --void: oklch(16% 0.024 255);
-      --surface: oklch(20.5% 0.028 255);
-      --deep: oklch(18% 0.026 255);
-      --sky: oklch(12.5% 0.035 255);
-      --ink: oklch(93% 0.014 240);
-      --ink-dark: oklch(16% 0.03 255);
-      --ink-soft: oklch(76% 0.024 245);
-      --rule: oklch(34% 0.03 250);
-      --huggian: #9DBBD6;
-      --blue: oklch(62% 0.17 235);
-      --blue-deep: oklch(78% 0.13 230);
-      --orange: #F07A48;
-      --teal: #2DD4BF;
-      --contador: #60A5FA;
-      --rails: #F7BF2E;
-      --cochera: #A78BFA;
-      --red: oklch(66% 0.18 28);
-      --gold: oklch(82% 0.15 85);
-      --grass: oklch(66% 0.15 150);
-      --grass-dark: oklch(50% 0.13 152);
-      --dirt: oklch(40% 0.065 60);
-      --dirt-dark: oklch(30% 0.055 55);
-      --cloud: oklch(30% 0.035 252);
-      --sun-fill: oklch(92% 0.05 90);
-      --sun-rays: oklch(72% 0.08 240 / 0.35);
-      --inv-bg: oklch(11.5% 0.025 255);
-      --inv-fg: oklch(95% 0.012 240);
-      --inv-muted: oklch(80% 0.02 245);
-      --slot-bg: oklch(27% 0.03 255);
-      --slot-hi: oklch(36% 0.03 255);
-      --slot-lo: oklch(15% 0.025 255);
-      --cal-stroke: oklch(93% 0.014 240 / 0.1);
-      --cal-0: oklch(25% 0.028 255);
-      --cal-1: oklch(36% 0.07 152);
-      --cal-2: oklch(48% 0.12 152);
-      --cal-3: oklch(62% 0.15 152);
-      --cal-4: oklch(76% 0.15 152);
-      --heat-base: oklch(24% 0.025 255);
-    }
-    mark { background: linear-gradient(transparent 62%, oklch(46% 0.12 85) 62% 92%, transparent 92%); }
-    .btn.primary { background: var(--blue); color: var(--ink-dark); }
-    .tag { background: var(--ink); color: var(--ink-dark); }
-    .status.active, .sign, .slot.out, .hotbar li:hover { color: var(--ink-dark); }
-    .hotbar { background: var(--inv-bg); border: 2px solid var(--ink); }
-    .hotbar li { color: var(--ink); }
-    .hotbar li:hover small { color: var(--ink-dark); }
-    .crab * { stroke: var(--ink-dark); }
-    .crab-shadow { fill: oklch(8% 0.02 255 / 0.45); stroke: none; }
-    .pupil { fill: var(--ink-dark); stroke: none; }
-    .mouth { fill: var(--ink-dark); }
-    .node circle { stroke: var(--ink-dark); }
-    .n6 circle { stroke: var(--ink); }
-    .links path { opacity: 0.72; }
   }
 
   *, *::before, *::after { box-sizing: border-box; }
