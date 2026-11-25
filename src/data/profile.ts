@@ -85,7 +85,7 @@ export const mainQuest = {
   points: [
     `Rust backend (Axum, SQLx, Tokio) on PostgreSQL: ${ezCommerce.crates}-crate Cargo workspace across ${ezCommerce.contexts} bounded contexts with ${ezCommerce.migrations} migrations.`,
     'Offline-capable POS that syncs when the connection returns.',
-    'Transactional outbox with idempotency keys, Mercado Pago reconciliation and ARCA electronic invoicing through ez-rails.',
+    'Transactional outbox with idempotency keys, Mercado Pago payments and ARCA electronic invoicing.',
     'Property-based and mutation testing; rollouts follow runbooks with precheck and rollback SQL.',
   ],
   stack: ['Rust', 'Axum', 'PostgreSQL', 'SolidJS', 'TypeScript'],
@@ -96,7 +96,7 @@ export const workspaceSplit = {
   title: `One Rust monolith into ${ezCommerce.crates} crates`,
   kind: 'Crafting · Cargo workspace split in Rust',
   summary:
-    `Split Ez-Commerce’s 543k-line single-crate Rust backend into a ${ezCommerce.crates}-crate Cargo workspace (core, ${ezCommerce.moduleCrates} module crates and the server binary) with zero downtime and measurable compile-time gates.`,
+    `Split Ez-Commerce’s 543k-line single-crate Rust backend into a ${ezCommerce.crates}-crate Cargo workspace (core, ${ezCommerce.moduleCrates} module crates and the server binary) with compile-time gates measured before and after.`,
   inputs: ['ez-sales', 'ez-catalog', 'ez-pricing', `+${ezCommerce.moduleCrates - 3} crates`],
   output: `${ezCommerce.crates}-crate workspace`,
   points: [
