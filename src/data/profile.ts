@@ -1,7 +1,7 @@
 // Everything the site says about Ariel lives here, so the home page, the CV and
 // llms.txt cannot drift apart. Facts mirror the verified portfolio notes:
 // no employer, operator or customer names beyond what is already public.
-import { ezCommerce, workspaceSplitBench } from './proof';
+import { ezCommerce, shopRhythm, workspaceSplitBench } from './proof';
 
 const fmtSec = (n: number) => `${n.toFixed(2)}s`;
 const [salesBench, catalogBench, coreBench] = workspaceSplitBench.scenarios;
@@ -45,7 +45,7 @@ export const huggianModules = [
 export const mainQuest = {
   title: 'Ez-Commerce & AI Assistant',
   kind: 'Main quest · multi-tenant commerce SaaS & production AI · founder, sole engineer',
-  summary: 'Point-of-sale, inventory, electronic invoicing and an in-app AI assistant running in production across 14 retail shops.',
+  summary: `Point-of-sale, inventory, electronic invoicing and an in-app AI assistant running in production across ${shopRhythm.shops} retail shops.`,
   points: [
     `Rust backend (Axum, SQLx, Tokio) on PostgreSQL: ${ezCommerce.crates}-crate Cargo workspace across ${ezCommerce.contexts} bounded contexts with ${ezCommerce.migrations} migrations and ${ezCommerce.releases} releases.`,
     'In-app AI assistant and multi-model LLM workflows (Anthropic, OpenAI, Google, Groq) with tool boundaries, cost limits and human-in-the-loop checkpoints.',
@@ -114,7 +114,7 @@ export const experience = [
     status: 'Active',
     points: [
       'Architected multi-model LLM workflows (Anthropic, OpenAI, Google, Groq), an in-app AI assistant inside Ez-Commerce, and open-source Rust agent tooling (iron-suite MCP memory hub, claude-harness tool-call guardrail, entropy-hunter CI gate).',
-      'Built and operate the Huggian SaaS suite (30-crate Rust workspace, 44 bounded contexts, 915 releases, 481 migrations, 62k+ production sales across 14 shops) plus its TypeScript billing, fiscal and identity platform; runs autonomously on rollback-safe infra.',
+      `Built and operate the Huggian SaaS suite (${ezCommerce.crates}-crate Rust workspace, ${ezCommerce.contexts} bounded contexts, ${ezCommerce.releases} releases, ${ezCommerce.migrations} migrations, ${Math.floor(shopRhythm.sales / 1000)}k+ production sales in ${shopRhythm.days} days across ${shopRhythm.shops} shops) plus its TypeScript billing, fiscal and identity platform; runs autonomously on rollback-safe infra.`,
       'Cut incremental Rust build times by 5.0×–8.7× (48s → 5.5s) via workspace splitting, and consolidated three live services plus an AI module into one Rust API + worker with zero-reissue key migration.',
     ],
   },
@@ -239,7 +239,7 @@ export const faq = [
   },
   {
     q: 'Will running Huggian conflict with a full-time engineering role?',
-    a: 'No. Huggian is a mature, automated production lab running on rollback-safe infrastructure for 14 small local shops. It does not require daytime hours, and his primary focus is joining one high-bar engineering team full-time.',
+    a: `No. Huggian is a mature, automated production lab running on rollback-safe infrastructure for ${shopRhythm.shops} small local shops. It does not require daytime hours, and his primary focus is joining one high-bar engineering team full-time.`,
   },
   {
     q: 'Most of his product code is private. What can a hiring team inspect?',
