@@ -12,7 +12,7 @@ import {
 import { posts } from '../data/writing';
 import Proof from '../components/Proof.astro';
 
-const title = `${person.name} — Senior Rust engineer for payments, billing and commerce backends`;
+const title = `${person.name} — Senior AI Engineer & Production Backend Architect`;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -30,12 +30,12 @@ const jsonLd = {
       name: person.name,
       url: `${site}/`,
       image: `${site}/og.png`,
-      jobTitle: 'Senior Software Engineer',
+      jobTitle: 'Senior AI Engineer & Production Backend Architect',
       description,
       email: `mailto:${email}`,
       address: { '@type': 'PostalAddress', addressCountry: 'AR' },
       worksFor: { '@type': 'Organization', name: 'Huggian', url: 'https://huggian.com' },
-      knowsAbout: ['Rust', 'TypeScript', 'Go', 'PostgreSQL', 'Payment systems', 'Billing systems', 'E-commerce backends', 'AWS', 'Terraform', 'Domain-driven design'],
+      knowsAbout: ['AI Engineering', 'LLM Agents', 'Model Context Protocol (MCP)', 'TypeScript', 'Rust', 'Go', 'Python', 'PostgreSQL', 'Payment systems', 'Distributed systems', 'AWS', 'Terraform'],
       sameAs: [person.github, person.linkedin, person.crates],
     },
     {
@@ -101,9 +101,9 @@ const goatcounter = '';
           <span>Ariel Onoriaga</span>
         </a>
         <nav class="hud-nav" aria-label="Sections">
-          <a href="#record">Proof</a>
-          <a href="#huggian">Modules</a>
+          <a href="#open-source">Open Source</a>
           <a href="#work">Work</a>
+          <a href="#record">Proof</a>
           <a href="/writing/">Writing</a>
           <a href="/cv/">CV</a>
         </nav>
@@ -112,7 +112,7 @@ const goatcounter = '';
           <span class="xp"><i></i></span>
           <span class="hud-class">Engineer</span>
         </div>
-        <p class="hud-status"><i aria-hidden="true"></i>Available · 20 h/week · UTC−3</p>
+        <p class="hud-status"><i aria-hidden="true"></i>Remote · Full-time &amp; contract · UTC−3</p>
       </div>
 
       <div class="sky" aria-hidden="true">
@@ -124,12 +124,13 @@ const goatcounter = '';
 
       <div class="stagewrap" id="top">
         <div class="intro">
-          <p class="eyebrow">Player one · Rust &amp; TypeScript</p>
+          <p class="eyebrow">Player one · AI Systems, TypeScript &amp; Rust</p>
           <h1><span>Ariel</span> <span>Onoriaga</span></h1>
           <p class="lede">{person.role}.</p>
           <p class="proof">
-            I build and run the systems where mistakes cost money. Seven years in, running the
-            five-product Huggian suite alone and shipping gaming systems that passed GLI certification.
+            I build production AI systems and the high-reliability backends behind them — agentic
+            workflows, MCP tooling, deterministic guardrails and money-movement platforms. Seven
+            years in, shipping GLI-certified AWS systems and the Huggian Rust/TypeScript suite.
           </p>
           <nav class="cta" aria-label="Contact">
             <a class="btn primary" href={mailto}>Email me</a>
@@ -161,7 +162,7 @@ const goatcounter = '';
             <g class="node n3"><circle cx="72" cy="202" r="8.5" /><text x="72" y="228">ez-contador</text></g>
             <g class="node n4"><circle cx="244" cy="148" r="9.5" /><text class="lbl-r" x="256" y="168">ez-rails</text></g>
             <g class="node n5"><circle cx="176" cy="214" r="8.5" /><text x="176" y="240">ez-cochera</text></g>
-            <g class="node n6"><circle cx="336" cy="204" r="9.5" /><text x="336" y="232">your project?</text></g>
+            <g class="node n6"><circle cx="336" cy="204" r="9.5" /><text x="336" y="232">your team?</text></g>
           </svg>
 
           <div class="walker">
@@ -212,7 +213,20 @@ const goatcounter = '';
         </ul>
       </section>
 
-      <Proof />
+      <section id="open-source">
+        <p class="tag" aria-hidden="true">Open-source drops</p>
+        <h2 class="h">Open source</h2>
+        <p class="note">Most of my product code is private. These are the projects you can read.</p>
+        <ul class="oss">
+          {openSource.map((o) => (
+            <li>
+              <a href={o.href}>{o.name}</a>
+              <span class="lang">{o.lang}</span>
+              <p>{o.what}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section id="services">
         <p class="tag" aria-hidden="true">Party role</p>
@@ -232,33 +246,14 @@ const goatcounter = '';
         <p class="tag" aria-hidden="true">How I play</p>
         <h2 class="h">How I work</h2>
         <p class="big">
-          I’m most useful where correctness matters and one person has to hold the whole picture:
-          <mark>money movement</mark>, multi-tenant data, integrations with systems that don’t
-          forgive retries.
+          I’m most useful where <mark>AI agents meet production state</mark> and mistakes cost
+          money: deterministic tool-call guardrails, MCP memory, idempotent payments and
+          multi-tenant backends that survive retries.
         </p>
         <p>
-          I work AI-augmented. Agents write a lot of the code; I own the architecture, the review
-          and the test gates, which is how one engineer can responsibly run this much surface area.
+          I build AI-native with strict verification gates — the same architecture, review and test
+          discipline I use to ship autonomous workflows safely to paying users.
         </p>
-      </section>
-
-      <section id="huggian" class="huggian-modules" aria-labelledby="huggian-h">
-        <p class="tag" aria-hidden="true">Product ecosystem</p>
-        <h2 class="h" id="huggian-h">Huggian modules</h2>
-        <p class="note">Five connected products plus a browser-only tools hub, sharing identity, billing and tax rails on <a href="https://huggian.com">huggian.com</a>.</p>
-        <div class="mod-grid">
-          {huggianModules.map((m) => (
-            <article class="mod" style={`--mod-accent:${m.hex}`}>
-              <header class="mod-head">
-                <h3><i class="mod-dot" aria-hidden="true"></i>{m.name}</h3>
-                <span class="mod-kind">{m.kind}</span>
-              </header>
-              <p class="mod-sum">{m.summary}</p>
-              <p class="mod-built"><strong>Built:</strong> {m.built}</p>
-              <p class="mod-link"><a href={m.href}>{m.label} →</a></p>
-            </article>
-          ))}
-        </div>
       </section>
 
       <section id="work">
@@ -319,6 +314,8 @@ const goatcounter = '';
         </div>
       </section>
 
+      <Proof />
+
       <section id="experience">
         <p class="tag" aria-hidden="true">Campaign history</p>
         <h2 class="h">Experience</h2>
@@ -338,19 +335,23 @@ const goatcounter = '';
         </ol>
       </section>
 
-      <section id="open-source">
-        <p class="tag" aria-hidden="true">Open-source drops</p>
-        <h2 class="h">Open source</h2>
-        <p class="note">Most of my product code is private. These are the projects you can read.</p>
-        <ul class="oss">
-          {openSource.map((o) => (
-            <li>
-              <a href={o.href}>{o.name}</a>
-              <span class="lang">{o.lang}</span>
-              <p>{o.what}</p>
-            </li>
+      <section id="huggian" class="huggian-modules" aria-labelledby="huggian-h">
+        <p class="tag" aria-hidden="true">Product ecosystem</p>
+        <h2 class="h" id="huggian-h">Huggian modules</h2>
+        <p class="note">Five connected products plus a browser-only tools hub, sharing identity, billing and tax rails on <a href="https://huggian.com">huggian.com</a>.</p>
+        <div class="mod-grid">
+          {huggianModules.map((m) => (
+            <article class="mod" style={`--mod-accent:${m.hex}`}>
+              <header class="mod-head">
+                <h3><i class="mod-dot" aria-hidden="true"></i>{m.name}</h3>
+                <span class="mod-kind">{m.kind}</span>
+              </header>
+              <p class="mod-sum">{m.summary}</p>
+              <p class="mod-built"><strong>Built:</strong> {m.built}</p>
+              <p class="mod-link"><a href={m.href}>{m.label} →</a></p>
+            </article>
           ))}
-        </ul>
+        </div>
       </section>
 
       <section id="writing">
@@ -398,10 +399,10 @@ const goatcounter = '';
       <section id="contact" class="coop">
         <div>
           <p class="tag">Player two wanted</p>
-          <h2>Got a quest that needs a senior engineer?</h2>
+          <h2>Hiring a Senior AI or Backend Engineer?</h2>
           <p>
-            Send three lines: what you’re building, what’s stuck, and your timeline. I reply within
-            two days with a yes, a no, or a time for a 20-minute call.
+            Send a short note about your team, the hard problem on your roadmap, and your timeline.
+            Full-time remote or senior contract on US hours (UTC−3).
           </p>
           <p class="cta">
             <a class="btn primary" href={mailto}>{email}</a>
@@ -517,7 +518,7 @@ const goatcounter = '';
 
   .stagewrap { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); gap: 2rem; align-items: end; max-width: 70rem; margin: 0 auto;
     padding: clamp(1.5rem, 4.5vw, 3.25rem) 1.25rem 0; min-height: clamp(31rem, 76vh, 45rem); }
-  .intro { padding-bottom: clamp(1.75rem, 4.5vw, 3rem); }
+  .intro { padding-bottom: clamp(3rem, 5.5vw, 4.2rem); }
   .eyebrow, .tag, .kind, .when, .lang { font-family: var(--pixel); font-weight: 500; letter-spacing: 0.04em; }
   .eyebrow { font-size: 1.05rem; color: var(--blue-deep); margin-bottom: 0.65rem; }
   h1 { font-family: var(--title); font-weight: 400; font-size: clamp(3rem, 9vw, 6.25rem); line-height: 0.98; color: var(--red);

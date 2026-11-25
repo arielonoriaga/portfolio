@@ -46,9 +46,8 @@ const sec = (n: number) => `${n.toFixed(2)}s`;
       </svg>
     </div>
     <figcaption>
-      <strong>{nf.format(contributions.total)}</strong> contributions on GitHub ({contributions.from} to {contributions.to}), on
-      {' '}{contributions.activeDays} different days: {nf.format(contributions.work)} at my day job and
-      {' '}{nf.format(contributions.personal)} on my own products, across two accounts. Nearly all of it is in private repositories.
+      <strong>{nf.format(contributions.total)}</strong> AI-augmented GitHub contributions ({contributions.from} to {contributions.to}) across
+      {' '}{contributions.activeDays} active days (work and personal private repositories combined) — small, review-gated increments under CI.
     </figcaption>
   </figure>
 
